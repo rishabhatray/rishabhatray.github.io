@@ -31,9 +31,34 @@
     <link rel="stylesheet" href="assets/style-2.css">
 
     <title>Rishabh Atray</title>
+ <!-- ------------- Inline canvas styles (added) ------------- -->
+    <style>
+      /* full-screen animated background canvas */
+      canvas#monetary-bg{
+        position:fixed;
+        left:0;
+        top:0;
+        width:100%;
+        height:100%;
+        z-index:0;               /* behind site content (content will be above) */
+        pointer-events:none;     /* keep page interactive */
+        display:block;
+      }
+      /* ensure your main content sits above the canvas */
+      .container, .allstuff, .allstuffp {
+        position:relative;
+        z-index:2;
+      }
+      /* keep footer above canvas too */
+      footer { position:relative; z-index:2; }
+    </style>
+
 </head>
 
 <body>
+ <body>
+    <!-- Canvas overlay for monetary curve animation -->
+    <canvas id="monetary-bg" aria-hidden="true"></canvas>
     <!-- <h1>Hello, world!</h1> -->
     <div class="container pt-5 allstuffp">
         <div class="row pt-5 allstuff">
@@ -709,7 +734,168 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
     <script src="assets/style-2.js"></script>
+  <script>
+    (function() {
+      const canvas = document.getElementById('monetary-bg');
+      const ctx = canvas.getContext('2d');
+
+      function resize() {
+        const dpr = Math.max(1, window.devicePixelRatio || 1);
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        canvas.width = Math.floor(w * dpr);
+        canvas.height = Math.floor(h * dpr);
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        recomputePaths();
+      }
+      window.addEventListener('resize', resize, { passive: true });
+      resize();
+
+      // normalized nodes (0..1) - tweak if you want to place links differently
+      const nodes = [
+        {x:0.12,y:0.45},
+        {x:0.30,y:0.40},
+        {x:0.50,y:0.30},
+        {x:0.62,y:0.36},
+        {x:0.72,y:0.55},
+        {x:0.86,y:0.32},
+        {x:0.90,y:0.60}
+      ];
+
+      // generate links (non-intrusive default)
+      const links = [];
+      function randInt(n){ return Math.floor(Math.random()*n); }
+      for (let i=0;i<nodes.length;i++){
+        const outs = 1 + randInt(2);
+        for (let j=0;j<outs;j++){
+          let k = randInt(nodes.length);
+          if (k===i) k=(k+1)%nodes.length;
+          links.push({a:i,b:k, speed:0.2 + Math.random()*0.6, offset: Math.random(), width: 0.9 + Math.random()*1.6});
+        }
+      }
+
+      // helper to compute absolute points
+      function pointOf(n){ return {x: Math.round(n.x * canvas.clientWidth), y: Math.round(n.y * canvas.clientHeight)}; }
+
+      function controlPoints(p1,p2){
+        const dx = p2.x - p1.x, dy = p2.y - p1.y;
+        const dist = Math.hypot(dx,dy) || 1;
+        const nx = dx / dist, ny = dy / dist;
+        const midx = (p1.x + p2.x)/2, midy = (p1.y + p2.y)/2;
+        const bend = Math.min(220, dist * 0.55);
+        const px = -ny * bend, py = nx * bend;
+        return [{x: midx + px*0.45, y: midy + py*0.45}, {x: midx + px*0.85, y: midy + py*0.85}];
+      }
+
+      // build paths (will be recomputed on resize)
+      const paths = links.map(l => ({ link: l, a:{}, b:{}, c1:{}, c2:{}, dashOffset: Math.random()*1000 }));
+
+      function recomputePaths(){
+        for (let i=0;i<paths.length;i++){
+          const l = paths[i].link;
+          const A = pointOf(nodes[l.a]); const B = pointOf(nodes[l.b]);
+          const ctr = controlPoints(A,B);
+          paths[i].a = A; paths[i].b = B; paths[i].c1 = ctr[0]; paths[i].c2 = ctr[1];
+        }
+      }
+      recomputePaths();
+
+      // cubic bezier evaluation
+      function cubicAt(p0,p1,p2,p3,t){
+        const u = 1 - t; const tt = t*t; const uu = u*u; const ttt = tt*t; const uuu = uu*u;
+        return {
+          x: uuu*p0.x + 3*uu*t*p1.x + 3*u*tt*p2.x + ttt*p3.x,
+          y: uuu*p0.y + 3*uu*t*p1.y + 3*u*tt*p2.y + ttt*p3.y
+        };
+      }
+
+      // animation loop
+      let last = performance.now();
+      function draw(now){
+        const dt = (now - last) / 1000; last = now;
+        const w = canvas.clientWidth, h = canvas.clientHeight;
+        ctx.clearRect(0,0,w,h);
+
+        ctx.save();
+        ctx.globalCompositeOperation = 'lighter';
+
+        // soft background strokes
+        for (const p of paths){
+          ctx.lineWidth = p.link.width * 1.2;
+          ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.moveTo(p.a.x,p.a.y);
+          ctx.bezierCurveTo(p.c1.x,p.c1.y,p.c2.x,p.c2.y,p.b.x,p.b.y);
+          ctx.strokeStyle = 'rgba(80,160,230,0.03)';
+          ctx.stroke();
+        }
+
+        // animated dashed strokes + moving particles
+        for (const p of paths){
+          p.dashOffset -= dt * 140 * p.link.speed;
+          ctx.setLineDash([10, 44]);
+          ctx.lineDashOffset = p.dashOffset;
+          ctx.lineWidth = p.link.width;
+          const grad = ctx.createLinearGradient(p.a.x,p.a.y,p.b.x,p.b.y);
+          grad.addColorStop(0, 'rgba(120,200,255,0.9)');
+          grad.addColorStop(0.5, 'rgba(70,150,255,0.95)');
+          grad.addColorStop(1, 'rgba(160,220,255,0.6)');
+          ctx.strokeStyle = grad;
+          ctx.beginPath();
+          ctx.moveTo(p.a.x,p.a.y);
+          ctx.bezierCurveTo(p.c1.x,p.c1.y,p.c2.x,p.c2.y,p.b.x,p.b.y);
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          // particle
+          p.link.offset = (p.link.offset || 0) + dt * 0.08 * p.link.speed;
+          if (p.link.offset > 1) p.link.offset = 0;
+          const pt = cubicAt(p.a,p.c1,p.c2,p.b, p.link.offset);
+          ctx.beginPath();
+          ctx.fillStyle = 'rgba(255,255,255,0.95)';
+          ctx.arc(pt.x, pt.y, 2.2 + p.link.width*0.6, 0, Math.PI*2);
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.fillStyle = 'rgba(120,200,255,0.06)';
+          ctx.arc(pt.x, pt.y, 8 + p.link.width*1.6, 0, Math.PI*2);
+          ctx.fill();
+        }
+
+        ctx.restore();
+
+        // small node dots (subtle, non-intrusive)
+        for (const n of nodes){
+          const pt = pointOf(n);
+          ctx.beginPath();
+          ctx.fillStyle = 'rgba(200,230,255,0.04)';
+          ctx.arc(pt.x, pt.y, 12, 0, Math.PI*2); ctx.fill();
+          ctx.beginPath();
+          ctx.fillStyle = 'rgba(255,255,255,0.75)';
+          ctx.arc(pt.x, pt.y, 1.6, 0, Math.PI*2); ctx.fill();
+        }
+
+        requestAnimationFrame(draw);
+      }
+
+      requestAnimationFrame(draw);
+
+      // small API if you want to re-position nodes programmatically from other scripts
+      window.monetaryBg = {
+        setNodes(newNodes){
+          if(!Array.isArray(newNodes)) return;
+          for(let i=0;i<Math.min(nodes.length,newNodes.length);i++){
+            nodes[i].x = newNodes[i].x; nodes[i].y = newNodes[i].y;
+          }
+          recomputePaths();
+        }
+      };
+    })();
+    </script>
 </body>
+
 <style>
 </style>
 
