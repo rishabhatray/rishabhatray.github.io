@@ -24,164 +24,71 @@
     <link rel="manifest" href="site.webmanifest">
 
     <style>
-        /* Full-page curved trade routes background */
-        #tradeCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0; /* behind content */
-            pointer-events: none; /* keep page clickable */
-            display: block;
-            background: #0b1a2b; /* dark background for contrast */
-        }
-        /* Content above animation */
-        body > *:not(#tradeCanvas) {
-            position: relative;
-            z-index: 1;
-            background: transparent; /* ensure animation is visible behind */
-        }
-        body {
-            margin: 0;
-            padding: 0;
-        }
+      /* Top trade animation container */
+      #trade-animation {
+        position: relative;
+        width: 100%;
+        height: 120px; /* adjust height as needed */
+        overflow: hidden;
+        background: #0b1a2b; /* dark background for visibility */
+      }
+      #trade-animation canvas {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
     </style>
 </head>
 
 <body>
-    <!-- Full-page animation canvas -->
-    <canvas id="tradeCanvas"></canvas>
-
-    <!-- Your existing page content starts here -->
-    <div class="container">
-        <h1>Rishabh Atray</h1>
-        <p>Pre-Doctoral Researcher, Google Research India...</p>
-        <!-- rest of your content -->
+    <!-- Trade Flow Animation Section -->
+    <div id="trade-animation">
+        <canvas id="tradeCanvas"></canvas>
     </div>
 
-    <!-- Animation script -->
     <script>
-        (function(){
-            const canvas = document.getElementById('tradeCanvas');
-            const ctx = canvas.getContext('2d');
+      const canvas = document.getElementById('tradeCanvas');
+      const ctx = canvas.getContext('2d');
 
-            function resize() {
-                const w = window.innerWidth;
-                const h = window.innerHeight;
-                canvas.width = w;
-                canvas.height = h;
-                recomputePaths();
-            }
-            window.addEventListener('resize', resize);
-            resize();
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = document.getElementById('trade-animation').offsetHeight;
+      }
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
 
-            const nodes = [
-                {x:0.15,y:0.35},
-                {x:0.32,y:0.30},
-                {x:0.55,y:0.45},
-                {x:0.70,y:0.55},
-                {x:0.85,y:0.35}
-            ];
-            const links = [];
-            for(let i=0;i<nodes.length;i++){
-                for(let j=i+1;j<nodes.length;j++){
-                    links.push({
-                        a:i, b:j,
-                        speed:0.4 + Math.random()*0.6,
-                        offset:Math.random(),
-                        width:1 + Math.random()*2
-                    });
-                }
-            }
-            const paths = links.map(l => ({link:l,a:{},b:{},c1:{},c2:{},dashOffset:Math.random()*1000}));
+      const flows = Array.from({ length: 20 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        speed: 0.5 + Math.random() * 1,
+        length: 50 + Math.random() * 100
+      }));
 
-            function pointOf(n){
-                return {x: n.x * canvas.width, y: n.y * canvas.height};
-            }
-            function controlPoints(p1,p2){
-                const dx = p2.x - p1.x;
-                const dy = p2.y - p1.y;
-                const dist = Math.hypot(dx,dy) || 1;
-                const midx = (p1.x + p2.x) / 2;
-                const midy = (p1.y + p2.y) / 2;
-                const bend = Math.min(300, dist * 0.5);
-                const nx = dx / dist;
-                const ny = dy / dist;
-                const px = -ny * bend;
-                const py = nx * bend;
-                return [
-                    {x: midx + px*0.4, y: midy + py*0.4},
-                    {x: midx + px*0.8, y: midy + py*0.8}
-                ];
-            }
-            function recomputePaths(){
-                for(let i=0;i<paths.length;i++){
-                    const l = paths[i].link;
-                    const A = pointOf(nodes[l.a]);
-                    const B = pointOf(nodes[l.b]);
-                    const C = controlPoints(A,B);
-                    paths[i].a=A; paths[i].b=B; paths[i].c1=C[0]; paths[i].c2=C[1];
-                }
-            }
-            recomputePaths();
+      function drawFlows() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.lineWidth = 1.5;
+        flows.forEach(f => {
+          const grad = ctx.createLinearGradient(f.x, f.y, f.x + f.length, f.y);
+          grad.addColorStop(0, 'rgba(0,255,200,0.8)');
+          grad.addColorStop(1, 'rgba(0,100,255,0)');
+          ctx.strokeStyle = grad;
+          ctx.beginPath();
+          ctx.moveTo(f.x, f.y);
+          ctx.lineTo(f.x + f.length, f.y);
+          ctx.stroke();
 
-            function cubicAt(p0,p1,p2,p3,t){
-                const u=1-t, tt=t*t, uu=u*u, ttt=tt*t, uuu=uu*u;
-                return {
-                    x: uuu*p0.x + 3*uu*t*p1.x + 3*u*tt*p2.x + ttt*p3.x,
-                    y: uuu*p0.y + 3*uu*t*p1.y + 3*u*tt*p2.y + ttt*p3.y
-                };
-            }
-
-            let last = performance.now();
-            function draw(now){
-                const dt = (now - last) / 1000; last = now;
-                ctx.clearRect(0,0,canvas.width,canvas.height);
-                ctx.globalCompositeOperation = 'lighter';
-
-                for(const p of paths){
-                    ctx.lineWidth = p.link.width*1.3;
-                    ctx.beginPath();
-                    ctx.moveTo(p.a.x,p.a.y);
-                    ctx.bezierCurveTo(p.c1.x,p.c1.y,p.c2.x,p.c2.y,p.b.x,p.b.y);
-                    ctx.strokeStyle = 'rgba(80,200,255,0.05)';
-                    ctx.stroke();
-                }
-
-                for(const p of paths){
-                    p.dashOffset -= dt * 120 * p.link.speed;
-                    ctx.setLineDash([14, 46]);
-                    ctx.lineDashOffset = p.dashOffset;
-                    ctx.lineWidth = p.link.width;
-                    const grad = ctx.createLinearGradient(p.a.x,p.a.y,p.b.x,p.b.y);
-                    grad.addColorStop(0, 'rgba(0,255,200,0.9)');
-                    grad.addColorStop(0.5, 'rgba(0,180,255,0.95)');
-                    grad.addColorStop(1, 'rgba(0,100,255,0.7)');
-                    ctx.strokeStyle = grad;
-                    ctx.beginPath();
-                    ctx.moveTo(p.a.x,p.a.y);
-                    ctx.bezierCurveTo(p.c1.x,p.c1.y,p.c2.x,p.c2.y,p.b.x,p.b.y);
-                    ctx.stroke();
-                    ctx.setLineDash([]);
-
-                    p.link.offset += dt * 0.08 * p.link.speed;
-                    if(p.link.offset > 1) p.link.offset = 0;
-                    const pt = cubicAt(p.a,p.c1,p.c2,p.b,p.link.offset);
-                    ctx.beginPath();
-                    ctx.fillStyle='rgba(255,255,255,0.95)';
-                    ctx.arc(pt.x, pt.y, 2 + p.link.width*0.5, 0, Math.PI*2);
-                    ctx.fill();
-                    ctx.beginPath();
-                    ctx.fillStyle='rgba(0,200,255,0.08)';
-                    ctx.arc(pt.x, pt.y, 8 + p.link.width*2, 0, Math.PI*2);
-                    ctx.fill();
-                }
-
-                requestAnimationFrame(draw);
-            }
-            requestAnimationFrame(draw);
-        })();
+          f.x += f.speed;
+          if (f.x > canvas.width) {
+            f.x = -f.length;
+            f.y = Math.random() * canvas.height;
+            f.speed = 0.5 + Math.random() * 1;
+          }
+        });
+        requestAnimationFrame(drawFlows);
+      }
+      drawFlows();
     </script>
 </body>
 </html>
