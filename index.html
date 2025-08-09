@@ -182,43 +182,7 @@
                 2020. During my time there, I worked on multimodal emotion recognition in healthcare with <a
                     class="in-text" href="https://und.edu/directory/s.vidhyadharan#researchint" target="_blank">Dr.
                     Sreejith V</a>.  -->
-                <!-- BEGIN Animated Background scripts -->
-    <!-- Three.js is required by Vanta -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <!-- Vanta NET effect -->
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
-    <script>
-      // Respect reduced motion users
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      let vantaRef = null;
-
-      function initVanta() {
-        if (prefersReducedMotion) return;
-        if (vantaRef) vantaRef.destroy?.();
-        vantaRef = VANTA.NET({
-          el: '#bg-anim',
-          backgroundAlpha: 0.0,     // transparent, so body background shows
-          color: 0x66ccff,          // primary line color
-          points: 10.0,
-          maxDistance: 20.0,
-          spacing: 18.0,
-          mouseControls: true,
-          touchControls: true,
-          gyroControls: false,
-          THREE: THREE              // ensure Vanta uses the loaded THREE
-        });
-      }
-
-      document.addEventListener('DOMContentLoaded', initVanta);
-      window.addEventListener('resize', () => vantaRef?.resize?.());
-      window.addEventListener('unload', () => vantaRef?.destroy?.());
-    </script>
-    <!-- END Animated Background scripts -->
-</body>
-<style>
-</style>
-
-</html>
+               
 
                 <p class="header pt-5">Updates</p>
                 <div style="height:250px;overflow:auto;">
