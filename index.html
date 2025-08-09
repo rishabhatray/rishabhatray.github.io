@@ -671,53 +671,7 @@
   <script>
     
 <style>
-</style>
- <svg class="monetary-curve" viewBox="0 0 800 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-    <!-- Axes (optional, faint) -->
-    <line x1="60" y1="250" x2="760" y2="250" stroke="var(--axis)" stroke-width="1" opacity="0.3"/>
-    <line x1="60" y1="250" x2="60" y2="40" stroke="var(--axis)" stroke-width="1" opacity="0.3"/>
 
-    <!-- Yield curve path -->
-    <path id="yieldCurve"
-          d="M60,240 C200,220 360,160 520,120 C640,95 700,90 760,85"
-          fill="none"
-          stroke="var(--curve)"
-          stroke-width="3"
-          stroke-linecap="round"
-          class="draw-path" />
-
-    <!-- Moving marker following the path -->
-    <circle r="5" fill="var(--marker)">
-      <animateMotion dur="4s" repeatCount="indefinite" keyTimes="0;1" keySplines="0.4 0 0.2 1" calcMode="spline">
-        <mpath xlink:href="#yieldCurve"/>
-      </animateMotion>
-    </circle>
-
-    <!-- Static points (tenors) -->
-    <circle cx="200" cy="220" r="3" fill="var(--tick)"/>
-    <circle cx="360" cy="160" r="3" fill="var(--tick)"/>
-    <circle cx="520" cy="120" r="3" fill="var(--tick)"/>
-    <circle cx="700" cy="92"  r="3" fill="var(--tick)"/>
-  </svg>
-</section>
-                    
-
-<!-- Optional monetary curve accent at bottom of hero -->
-<svg class="monetary-curve" viewBox="0 0 800 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-  <line x1="60" y1="250" x2="760" y2="250" stroke="var(--axis)" stroke-width="1" opacity="0.25"/>
-  <line x1="60" y1="250" x2="60" y2="40"  stroke="var(--axis)" stroke-width="1" opacity="0.25"/>
-  <path id="yieldCurve" d="M60,240 C200,220 360,160 520,120 C640,95 700,90 760,85"
-        fill="none" stroke="var(--curve)" stroke-width="3" stroke-linecap="round" class="draw-path" />
-  <circle r="5" fill="var(--marker)">
-    <animateMotion dur="9s" repeatCount="indefinite" keyTimes="0;1" keySplines="0.4 0 0.2 1" calcMode="spline">
-      <mpath xlink:href="#yieldCurve"/>
-    </animateMotion>
-  </circle>
-  <circle cx="200" cy="220" r="3" fill="var(--axis)" opacity=".7"/>
-  <circle cx="360" cy="160" r="3" fill="var(--axis)" opacity=".7"/>
-  <circle cx="520" cy="120" r="3" fill="var(--axis)" opacity=".7"/>
-  <circle cx="700" cy="92"  r="3" fill="var(--axis)" opacity=".7"/>
-</svg>
 
 
 </html>
