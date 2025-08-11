@@ -1,39 +1,63 @@
-// Initialize font properties
-const fontname = "Ubuntu";
-const fontweights = [300, 400]
+// Theme settings
+const themes = {
+  dark: {
+    fontname: "Ubuntu",
+    fontweights: [300, 400],
+    basecolor: "#e6f1f7",
+    accentcolor: "#00d4b0",
+    highlightcolor: "#ffffff",
+    bodyfontweight: 300,
+    bodyfontsize: "12pt",
+    backgroundcolor: "#0b1a2b",
+    menucolor: "#e6f1f7",
+    menufontsize: "14pt",
+    headercolor: "#00d4b0",
+    headerfontsize: "18pt",
+    namecolor: "#ffffff",
+    namefontsize: "23pt",
+    insttitlecolor: "#ffffff",
+    insttitlesize: "12px",
+    instyearcolor: "#00d4b0",
+    instyearsize: "11px"
+  },
+  light: {
+    fontname: "Ubuntu",
+    fontweights: [300, 400],
+    basecolor: "#333",
+    accentcolor: "#a00",
+    highlightcolor: "#111",
+    bodyfontweight: 300,
+    bodyfontsize: "12pt",
+    backgroundcolor: "#ffffff",
+    menucolor: "#333",
+    menufontsize: "14pt",
+    headercolor: "#a00",
+    headerfontsize: "18pt",
+    namecolor: "#111",
+    namefontsize: "23pt",
+    insttitlecolor: "#111",
+    insttitlesize: "12px",
+    instyearcolor: "#a00",
+    instyearsize: "11px"
+  }
+};
 
-// Color properties
-const basecolor = "#777";
-const accentcolor = "#a00";
-const highlightcolor = "#111";
-
-// const basecolor = "#888";
-// const accentcolor = "#222";
-// const highlight = "#111";
-
-// Body properties
-const bodyfontweight = 300;
-const bodyfontsize = "12pt";
-const backgroundcolor = "#fff";
-
-// Load saved theme or default to dark
+// Load saved theme or default
 let currentTheme = localStorage.getItem("theme") || "dark";
 applyTheme(currentTheme);
 
-// Apply theme function
+// Apply theme styles
 function applyTheme(themeName) {
   const t = themes[themeName];
 
-  // Load font
+  // Load Google Font
   $("head").append(
     `<link href='https://fonts.googleapis.com/css2?family=${t.fontname}:wght@${t.fontweights.join(
       ";"
-    )}&display=swap' rel='stylesheet' type='text/css'>`
+    )}&display=swap' rel='stylesheet'>`
   );
-  $("body").css("font-family", t.fontname);
-
-  // Body
   $("body").css({
+    "font-family": t.fontname,
     "color": t.basecolor,
     "font-weight": t.bodyfontweight,
     "font-size": t.bodyfontsize,
@@ -41,28 +65,60 @@ function applyTheme(themeName) {
   });
 
   // Links
-  $("a").css("color", t.accentcolor);
+  $("a").css({
+    "color": t.accentcolor,
+    "text-decoration": "none"
+  });
 
   // Menu
-  $(".menulink").css("color", t.basecolor);
+  $(".menulink").css({
+    "color": t.menucolor,
+    "font-size": t.menufontsize,
+    "text-decoration": "none"
+  });
 
   // Header & Name
-  $(".header").css("color", t.accentcolor);
-  $(".name").css("color", t.highlightcolor);
+  $(".header").css({
+    "color": t.headercolor,
+    "font-size": t.headerfontsize,
+    "text-decoration": "none"
+  });
+  $(".name").css({
+    "color": t.namecolor,
+    "font-size": t.namefontsize
+  });
 
   // Publications
-  $(".papertitle").css("color", t.accentcolor);
-  $(".thisauthor").css("color", t.highlightcolor);
+  $(".papertitle").css({
+    "color": t.accentcolor,
+    "font-size": t.bodyfontsize,
+    "font-weight": t.bodyfontweight,
+    "text-decoration": "none",
+    "font-style": "normal"
+  });
+
+  $(".thisauthor").css({
+    "color": t.highlightcolor,
+    "font-weight": t.bodyfontweight,
+    "text-decoration": "none",
+    "font-style": "normal"
+  });
 
   // Institutions
-  $(".institution").css("color", t.highlightcolor);
-  $(".years").css("color", t.accentcolor);
+  $(".institution").css({
+    "color": t.insttitlecolor,
+    "font-size": t.insttitlesize
+  });
+  $(".years").css({
+    "color": t.instyearcolor,
+    "font-size": t.instyearsize
+  });
 
-  // Save theme choice
+  // Save choice
   localStorage.setItem("theme", themeName);
 }
 
-// Create theme toggle button
+// Theme toggle button
 $("<button id='themeToggle'>🌓</button>")
   .css({
     position: "fixed",
@@ -82,6 +138,7 @@ $("<button id='themeToggle'>🌓</button>")
     currentTheme = currentTheme === "dark" ? "light" : "dark";
     applyTheme(currentTheme);
   });
+
 
 // Link properties
 const acolor = accentcolor;
