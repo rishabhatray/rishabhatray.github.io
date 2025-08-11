@@ -50,7 +50,6 @@ applyTheme(currentTheme);
 function applyTheme(themeName) {
   const t = themes[themeName];
 
-  // Load Google Font
   $("head").append(
     `<link href='https://fonts.googleapis.com/css2?family=${t.fontname}:wght@${t.fontweights.join(
       ";"
@@ -64,73 +63,54 @@ function applyTheme(themeName) {
     "background-color": t.backgroundcolor
   });
 
-  // Links
   $("a").css({ "color": t.accentcolor, "text-decoration": "none" });
+  $(".menulink").css({ "color": t.menucolor, "font-size": t.menufontsize });
+  $(".header").css({ "color": t.headercolor, "font-size": t.headerfontsize });
+  $(".name").css({ "color": t.namecolor, "font-size": t.namefontsize });
+  $(".papertitle").css({ "color": t.accentcolor });
+  $(".thisauthor").css({ "color": t.highlightcolor });
+  $(".institution").css({ "color": t.insttitlecolor });
+  $(".years").css({ "color": t.instyearcolor });
 
-  // Menu
-  $(".menulink").css({
-    "color": t.menucolor,
-    "font-size": t.menufontsize,
-    "text-decoration": "none"
-  });
-
-  // Header & Name
-  $(".header").css({
-    "color": t.headercolor,
-    "font-size": t.headerfontsize,
-    "text-decoration": "none"
-  });
-  $(".name").css({
-    "color": t.namecolor,
-    "font-size": t.namefontsize
-  });
-
-  // Publications
-  $(".papertitle").css({
-    "color": t.accentcolor,
-    "font-size": t.bodyfontsize,
-    "font-weight": t.bodyfontweight,
-    "text-decoration": "none",
-    "font-style": "normal"
-  });
-
-  $(".thisauthor").css({
-    "color": t.highlightcolor,
-    "font-weight": t.bodyfontweight,
-    "text-decoration": "none",
-    "font-style": "normal"
-  });
-
-  // Institutions
-  $(".institution").css({
-    "color": t.insttitlecolor,
-    "font-size": t.insttitlesize
-  });
-  $(".years").css({
-    "color": t.instyearcolor,
-    "font-size": t.instyearsize
-  });
-
-  // Save choice
   localStorage.setItem("theme", themeName);
+
+  // Change icon
+  $("#themeToggle").html(themeName === "dark" ? "🌙" : "☀️");
 }
 
-// Create theme toggle button only if it doesn't exist
+// Inject CSS for the toggle
+$("<style>")
+  .prop("type", "text/css")
+  .html(`
+    #themeToggle {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      z-index: 1000;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      border: none;
+      background: #444;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+    #themeToggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+    }
+  `)
+  .appendTo("head");
+
+// Create toggle button only once
 if (!$("#themeToggle").length) {
-  $("<button id='themeToggle'>🌓</button>")
-    .css({
-      position: "fixed",
-      top: "15px",
-      right: "20px",
-      zIndex: 1000,
-      padding: "6px 10px",
-      fontSize: "14px",
-      border: "none",
-      borderRadius: "4px",
-      cursor: "pointer",
-      background: "#888",
-      color: "#fff"
-    })
+  $("<button id='themeToggle'></button>")
     .appendTo("body")
     .on("click", function () {
       currentTheme = currentTheme === "dark" ? "light" : "dark";
@@ -138,7 +118,8 @@ if (!$("#themeToggle").length) {
     });
 }
 
-
+// Set initial icon
+$("#themeToggle").html(currentTheme === "dark" ? "🌙" : "☀️");
 
 // Link properties
 const acolor = accentcolor;
