@@ -16,6 +16,73 @@ const bodyfontweight = 300;
 const bodyfontsize = "12pt";
 const backgroundcolor = "#fff";
 
+// Load saved theme or default to dark
+let currentTheme = localStorage.getItem("theme") || "dark";
+applyTheme(currentTheme);
+
+// Apply theme function
+function applyTheme(themeName) {
+  const t = themes[themeName];
+
+  // Load font
+  $("head").append(
+    `<link href='https://fonts.googleapis.com/css2?family=${t.fontname}:wght@${t.fontweights.join(
+      ";"
+    )}&display=swap' rel='stylesheet' type='text/css'>`
+  );
+  $("body").css("font-family", t.fontname);
+
+  // Body
+  $("body").css({
+    "color": t.basecolor,
+    "font-weight": t.bodyfontweight,
+    "font-size": t.bodyfontsize,
+    "background-color": t.backgroundcolor
+  });
+
+  // Links
+  $("a").css("color", t.accentcolor);
+
+  // Menu
+  $(".menulink").css("color", t.basecolor);
+
+  // Header & Name
+  $(".header").css("color", t.accentcolor);
+  $(".name").css("color", t.highlightcolor);
+
+  // Publications
+  $(".papertitle").css("color", t.accentcolor);
+  $(".thisauthor").css("color", t.highlightcolor);
+
+  // Institutions
+  $(".institution").css("color", t.highlightcolor);
+  $(".years").css("color", t.accentcolor);
+
+  // Save theme choice
+  localStorage.setItem("theme", themeName);
+}
+
+// Create theme toggle button
+$("<button id='themeToggle'>🌓</button>")
+  .css({
+    position: "fixed",
+    top: "15px",
+    right: "20px",
+    zIndex: 1000,
+    padding: "6px 10px",
+    fontSize: "14px",
+    border: "none",
+    borderRadius: "4px",
+    cursor: "pointer",
+    background: "#888",
+    color: "#fff"
+  })
+  .appendTo("body")
+  .on("click", function () {
+    currentTheme = currentTheme === "dark" ? "light" : "dark";
+    applyTheme(currentTheme);
+  });
+
 // Link properties
 const acolor = accentcolor;
 const adecoration = "none";
