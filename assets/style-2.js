@@ -65,10 +65,7 @@ function applyTheme(themeName) {
   });
 
   // Links
-  $("a").css({
-    "color": t.accentcolor,
-    "text-decoration": "none"
-  });
+  $("a").css({ "color": t.accentcolor, "text-decoration": "none" });
 
   // Menu
   $(".menulink").css({
@@ -118,26 +115,29 @@ function applyTheme(themeName) {
   localStorage.setItem("theme", themeName);
 }
 
-// Theme toggle button
-$("<button id='themeToggle'>🌓</button>")
-  .css({
-    position: "fixed",
-    top: "15px",
-    right: "20px",
-    zIndex: 1000,
-    padding: "6px 10px",
-    fontSize: "14px",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-    background: "#888",
-    color: "#fff"
-  })
-  .appendTo("body")
-  .on("click", function () {
-    currentTheme = currentTheme === "dark" ? "light" : "dark";
-    applyTheme(currentTheme);
-  });
+// Create theme toggle button only if it doesn't exist
+if (!$("#themeToggle").length) {
+  $("<button id='themeToggle'>🌓</button>")
+    .css({
+      position: "fixed",
+      top: "15px",
+      right: "20px",
+      zIndex: 1000,
+      padding: "6px 10px",
+      fontSize: "14px",
+      border: "none",
+      borderRadius: "4px",
+      cursor: "pointer",
+      background: "#888",
+      color: "#fff"
+    })
+    .appendTo("body")
+    .on("click", function () {
+      currentTheme = currentTheme === "dark" ? "light" : "dark";
+      applyTheme(currentTheme);
+    });
+}
+
 
 
 // Link properties
