@@ -23,77 +23,110 @@
     <link rel="icon" type="image/png" sizes="16x16" href="images/nicons/favicon-16x16.png">
     <link rel="manifest" href="site.webmanifest">
 
+    <!-- Inline Styles -->
     <style>
-      /* Top trade animation container */
-      #trade-animation {
-        position: relative;
-        width: 100%;
-        height: 120px; /* adjust height as needed */
-        overflow: hidden;
-        background: #0b1a2b; /* dark background for visibility */
-      }
-      #trade-animation canvas {
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%;
-        height: 100%;
-        display: block;
-      }
+        /* Trade Flow Animation Container */
+        #trade-animation {
+            position: relative;
+            width: 100%;
+            height: 140px;
+            overflow: hidden;
+            background: linear-gradient(270deg, #0b1a2b, #001f3f, #0b1a2b);
+            background-size: 600% 600%;
+            animation: gradientShift 20s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #trade-animation canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
     </style>
 </head>
 
 <body>
-    
 
-    <!-- Trade Flow Animation Section -->
+    <!-- Trade Flow Animation -->
     <div id="trade-animation">
         <canvas id="tradeCanvas"></canvas>
     </div>
 
+    <!-- Scripts -->
+    <script src="style-2.js" defer></script>
     <script>
-      const canvas = document.getElementById('tradeCanvas');
-      const ctx = canvas.getContext('2d');
+        const canvas = document.getElementById('tradeCanvas');
+        const ctx = canvas.getContext('2d');
 
-      function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = document.getElementById('trade-animation').offsetHeight;
-      }
-      window.addEventListener('resize', resizeCanvas);
-      resizeCanvas();
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = document.getElementById('trade-animation').offsetHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-      const flows = Array.from({ length: 20 }, () => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        speed: 0.5 + Math.random() * 1,
-        length: 50 + Math.random() * 100
-      }));
+        const flows = Array.from({ length: 20 }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            speed: 0.5 + Math.random() * 1,
+            length: 80 + Math.random() * 120,
+            dotPos: Math.random() // position of glowing dot along the line
+        }));
 
-      function drawFlows() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.lineWidth = 1.5;
-        flows.forEach(f => {
-          const grad = ctx.createLinearGradient(f.x, f.y, f.x + f.length, f.y);
-          grad.addColorStop(0, 'rgba(0,255,200,0.8)');
-          grad.addColorStop(1, 'rgba(0,100,255,0)');
-          ctx.strokeStyle = grad;
-          ctx.beginPath();
-          ctx.moveTo(f.x, f.y);
-          ctx.lineTo(f.x + f.length, f.y);
-          ctx.stroke();
+        function drawFlows() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.lineWidth = 1.5;
 
-          f.x += f.speed;
-          if (f.x > canvas.width) {
-            f.x = -f.length;
-            f.y = Math.random() * canvas.height;
-            f.speed = 0.5 + Math.random() * 1;
-          }
-        });
-        requestAnimationFrame(drawFlows);
-      }
-      drawFlows();
+            flows.forEach(f => {
+                // Gradient line (trade route)
+                const grad = ctx.createLinearGradient(f.x, f.y, f.x + f.length, f.y);
+                grad.addColorStop(0, 'rgba(0,255,200,0.8)');
+                grad.addColorStop(1, 'rgba(0,100,255,0)');
+                ctx.strokeStyle = grad;
+                ctx.beginPath();
+                ctx.moveTo(f.x, f.y);
+                ctx.lineTo(f.x + f.length, f.y);
+                ctx.stroke();
+
+                // Glowing dot (shipment)
+                const dotX = f.x + f.length * f.dotPos;
+                const dotY = f.y;
+                ctx.beginPath();
+                ctx.arc(dotX, dotY, 3, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255,255,255,0.9)';
+                ctx.shadowColor = 'rgba(0,255,200,0.8)';
+                ctx.shadowBlur = 8;
+                ctx.fill();
+
+                // Move line & dot
+                f.x += f.speed;
+                f.dotPos += 0.02; // dot movement speed
+
+                if (f.dotPos > 1) f.dotPos = 0;
+                if (f.x > canvas.width) {
+                    f.x = -f.length;
+                    f.y = Math.random() * canvas.height;
+                    f.speed = 0.5 + Math.random() * 1;
+                }
+            });
+
+            ctx.shadowBlur = 0; // reset shadow
+            requestAnimationFrame(drawFlows);
+        }
+
+        drawFlows();
     </script>
+
 </body>
 </html>
+
 
     </script>
 
