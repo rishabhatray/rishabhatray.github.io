@@ -1,226 +1,457 @@
-.instilogo {
-    height: 50px;
-    filter: grayscale(20%);
-}
+/* Light theme (default) */
 :root {
-  --bg-color: #0b1a2b;
-  --text-color: #e6f1f7;
-  --link-color: #00d4b0;
-}
-
-[data-theme="light"] {
   --bg-color: #fbfcfe;
   --text-color: #222;
-  --link-color: #007b7b;
+  --link-color: #007b75; /* teal for light mode */
+  --gold: #b88206;
+  --gold-hover: #ffb400;
+  --line-color: #ccc; /* For soft lines, e.g., in D3.js map */
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  --bg-color: #0b1a2b;
+  --text-color: #e6f1f7;
+  --link-color: #00d4b0; /* glow color from animation lines */
+  --line-color: #eee; /* Adjusted for dark mode visibility */
+}
+
+/* Page base */
+body, .name, .social-icons, .about, .links, p, a, button {
+  font-family: 'Ubuntu', Arial, Helvetica, sans-serif !important;
 }
 
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
-  transition: background 0.3s, color 0.3s;
+  font-family: "Ubuntu", Arial, Helvetica, sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
 }
 
-a {
-  color: var(--link-color);
-  transition: color 0.3s;
+body.loaded {
+  opacity: 1;
 }
 
-/* Theme toggle button */
+/* Animation Header */
+#trade-animation {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  overflow: hidden;
+  
+  /* Layered gradients for a liquid feel */
+  background:
+    radial-gradient(circle at 20% 50%, rgba(0, 212, 176, 0.2), transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.05), transparent 50%),
+    linear-gradient(270deg, #0b1a2b, #001f3f, #0b1a2b);
+  background-size: 200% 200%, 200% 200%, 600% 600%;
+
+  animation: 
+    bubbleMove 12s ease-in-out infinite,
+    bubbleMove2 18s ease-in-out infinite,
+    gradientShift 20s ease infinite;
+}
+
+@keyframes bubbleMove {
+  0%, 100% { background-position: 0% 50%, 0% 50%, 0% 50%; }
+  50% { background-position: 50% 60%, 0% 50%, 100% 50%; }
+}
+
+@keyframes bubbleMove2 {
+  0%, 100% { background-position: 0% 50%, 50% 50%, 0% 50%; }
+  50% { background-position: 60% 40%, 100% 50%, 100% 50%; }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%, 0% 50%, 0% 50%; }
+  50% { background-position: 50% 50%, 50% 50%, 100% 50%; }
+  100% { background-position: 0% 50%, 0% 50%, 0% 50%; }
+}
+
+/* Name */
+.name {
+  font-size: 25pt;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 8px;
+}
+[data-theme="dark"] .name { color: var(--text-color); }
+
+/* Profile picture */
+.profilepic {
+  width: 200px;
+  height: 200px;
+  object-fit: contain; /* show whole picture */
+  border-radius: 50%;
+  display: block;
+  margin: 0 auto 10px;
+  box-shadow: 0 0px 0px rgba(0,0,0,0.25);
+  background-color: #fff; /* optional: fills empty space */
+}
+
+/* Social icons */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin: 6px 0 16px; /* keep space below icons */
+}
+
+.social-icons a {
+  text-decoration: none;
+  color: var(--gold);
+  font-size: 30px;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: transform .12s ease, color .12s ease;
+}
+
+.social-icons a:hover {
+  color: var(--gold-hover);
+  transform: translateY(-3px);
+}
+
+.social-icons .fa-file-alt {
+  font-size: 25px; /* match others */
+}
+
+/* Theme toggle */
 .theme-toggle {
   position: fixed;
   top: 15px;
   right: 20px;
-  background: transparent;
-  border: 2px solid var(--link-color);
+  z-index: 1200;
+  width: 38px;  /* smaller */
+  height: 38px;
   border-radius: 50%;
-  padding: 8px;
+  border: none;
+  background: #e8e8e8;
+  color: #333;
+  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
   cursor: pointer;
-  color: var(--link-color);
-  font-size: 1.2rem;
-  z-index: 1000;
-  transition: background 0.3s, color 0.3s, border-color 0.3s;
+  transition: transform .15s ease, box-shadow .15s ease;
 }
 
 .theme-toggle:hover {
-  background: var(--link-color);
-  color: var(--bg-color);
+  transform: scale(1.08);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
 }
 
-:root{
-  --bg: #0b1220;      /* deep navy */
-  --fg: #e9eef7;      /* off-white text */
-  --accent: #4cc9f0;  /* cyan accent */
-  --axis: #9aa7bd;
-  --curve: #ffd166;   /* warm gold for curve */
-  --marker: #ef476f;  /* coral for moving dot */
-  --tick: #a3b1c6;
+[data-theme="dark"] .theme-toggle {
+  background: #1e293b; /* dark grey for dark mode */
+  color: #f1f5f9;
 }
 
-.hero{
+/* Glassmorphism Profile */
+.glass-profile {
+  background: rgba(255, 255, 255, 0.06); /* more transparent for soft effect */
+  border-radius: 20px;
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  max-width: 300px;
+  margin: 0 auto;
+
+  /* Fade-in animation */
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s ease-out forwards;
+}
+
+[data-theme="light"] .glass-profile {
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Sticky positioning */
+#left-fixed {
+  position: fixed;
+  top: 280px; /* aligns with right section */
+  width: 300px;
+}
+
+@media (max-width: 767px) {
+  #left-fixed {
+    position: static;
+    width: 100%;
+    top: auto;
+  }
+}
+
+/* Glassmorphic Panel */
+.glassmorphic-panel {
+  background: rgba(255, 255, 255, 0.25); /* Semi-transparent white for light mode glass effect */
+  backdrop-filter: blur(5px); /* Soft blur */
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: all 0.3s ease; /* Smooth transitions for hover and theme changes */
+  color: #333; /* Dark text for light mode contrast */
+  font-weight: 400 !important; /* Lighter weight */
+  max-width: 800px; /* Optional: restrict width if needed for about section */
+  margin: 0 auto; /* Center it */
+}
+
+.glassmorphic-panel:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+/* Dark mode overrides for glassmorphic-panel */
+[data-theme="dark"] .glassmorphic-panel {
+  background: rgba(255, 255, 255, 0.05); /* Very subtle white translucency for dark glass */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Faint white border for glow */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Darker shadow for depth */
+  color: var(--text-color); /* Light text for readability */
+  backdrop-filter: blur(8px) saturate(120%); /* Slightly stronger blur and saturation for a "neon glass" feel */
+}
+
+[data-theme="dark"] .glassmorphic-panel:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 212, 176, 0.2); /* Tie in your --link-color glow for hover */
+}
+
+/* Underline Animation */
+a {
   position: relative;
-  padding: 8rem 1.5rem 4rem;
-  background: radial-gradient(1200px 600px at 70% -20%, #11213b 0%, #0b1220 60%, #0b1220 100%);
-  color: var(--fg);
-  overflow: hidden;
-}
-
-.hero-copy{
-  position: relative;
-  max-width: 900px;
-  margin: 0 auto 2rem;
-  z-index: 2;
-  text-align: left;
-}
-
-.hero h1{
-  font-size: clamp(2.2rem, 3.5vw, 3rem);
-  letter-spacing: 0.5px;
-  margin: 0 0 0.5rem;
-}
-
-.hero p{
-  font-size: clamp(1.05rem, 1.2vw, 1.15rem);
-  opacity: 0.92;
-  margin: 0 0 1.25rem;
-}
-
-.hero-cta .btn{
-  display: inline-block;
-  margin-right: 0.75rem;
-  padding: 0.65rem 1rem;
-  border-radius: 8px;
-  background: var(--accent);
-  color: #062130;
-  font-weight: 600;
+  color: var(--link-color);
   text-decoration: none;
-  transition: transform 150ms ease, box-shadow 150ms ease, background 200ms ease;
-  box-shadow: 0 4px 16px rgba(76,201,240,0.25);
 }
 
-.hero-cta .btn:hover{ transform: translateY(-1px); }
-.hero-cta .btn:active{ transform: translateY(0); }
-
-.hero-cta .btn.ghost{
-  background: transparent;
-  color: var(--fg);
-  border: 1px solid rgba(233,238,247,0.35);
-  box-shadow: none;
-}
-
-.monetary-curve{
+a::after {
+  content: '';
   position: absolute;
-  inset: auto 0 0 0;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 1px;
+  background: var(--link-color);
+  transition: width 0.3s ease;
+}
+
+a:hover::after {
   width: 100%;
-  height: 60%;
-  z-index: 1;
-  opacity: 0.9;
-  /* soft blur for depth */
-  filter: drop-shadow(0 6px 20px rgba(0,0,0,0.25));
 }
 
-/* SVG path draw-on effect */
-.draw-path{
-  stroke-dasharray: 1000;
-  stroke-dashoffset: 1000;
-  animation: draw 3.2s ease-out forwards, glow 4s ease-in-out 0.5s infinite alternate;
+.links a:hover, a:hover {
+  text-decoration: underline;
 }
 
-@keyframes draw{
-  to{ stroke-dashoffset: 0; }
+/* Header */
+.header {
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding-bottom: 4px;
+  margin-bottom: 14px;
 }
 
-/* subtle glow pulsing on curve after draw */
-@keyframes glow{
-  0%{ filter: drop-shadow(0 0 0px rgba(255,209,102,0.0)); }
-  100%{ filter: drop-shadow(0 0 10px rgba(255,209,102,0.25)); }
+/* Minimal scrollbar for Updates section */
+.updates-scroll {
+  height: 250px;
+  overflow-y: auto;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: var(--link-color) transparent; /* Firefox */
 }
 
-/* Reduce motion for accessibility */
-@media (prefers-reduced-motion: reduce){
-  .draw-path{ animation: none; stroke-dashoffset: 0; }
-  .monetary-curve animateMotion{ display: none; }
+/* Chrome, Edge, Safari */
+.updates-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.updates-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.updates-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--link-color);
+  border-radius: 3px;
+}
+
+.updates-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: var(--gold-hover);
+}
+
+/* Particle Canvas */
+#particleCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* keeps it behind everything */
+  pointer-events: none; /* allows clicks through it */
+}
+
+/* Fixed Navbar */
+:root {
+  --animH: 140px; /* your header animation height */
+  --navH: 54px;   /* navbar height */
+}
+
+/* NAV BAR */
+.portfolio-nav {
+  position: fixed;
+  left: 0; right: 0;
+  top: var(--animH);
+  height: var(--navH);
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  
+  /* Liquid glass effect */
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 
+    0 4px 15px rgba(0,0,0,0.1),
+    inset 0 0 0 1px rgba(255,255,255,0.2);
+  
+  /* Liquid animation */
+  background-image: 
+    linear-gradient(125deg, 
+      rgba(255,255,255,0.3) 0%,
+      rgba(255,255,255,0.1) 40%,
+      rgba(255,255,255,0.05) 60%,
+      rgba(255,255,255,0.2) 100%
+    );
+  background-size: 200% 200%;
+  animation: liquidFlow 8s ease infinite;
+  
+  z-index: 100;
+  transition: all 0.3s ease;
+}
+
+@keyframes liquidFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.portfolio-nav a {
+  font-weight: 450;
+  text-decoration: none;
+  color: var(--link-color);
+  transition: color 0.3s ease;
+}
+
+.portfolio-nav a:hover { color: var(--gold-hover); }
+
+body.nav-pinned .portfolio-nav { top: 0; }
+
+.nav-spacer { height: var(--navH); }
+
+[data-theme="dark"] .portfolio-nav {
+  background: rgba(20,26,40,0.2);
+  border-bottom: 1px solid rgba(0,212,176,0.15);
+  --link-color: #00d4b0;
+  box-shadow: 
+    0 4px 15px rgba(0,0,0,0.2),
+    inset 0 0 0 1px rgba(0,212,176,0.1);
+}
+
+/* Smooth anchor stops so sections aren't hidden under the bar */
+section[id] {
+  scroll-margin-top: calc(var(--navH) + 32px); /* increased padding */
+  scroll-behavior: smooth;
+  -webkit-scroll-margin-top: calc(var(--navH) + 32px); /* for Safari */
+  transition: scroll-margin-top 0.3s ease;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--navH) + 32px);
 }
 
 
-a:hover {
-    /* font-weight: 400; */
+
+
+/* Desktop: hamburger hidden, nav visible */
+#hamburger {
+  display: none;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  /* Mobile: hide desktop nav, show hamburger */
+  .desktop-nav {
+    display: none;
+  }
+  
+  #hamburger {
+    display: block;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1000;
+    background: #ff69b4;
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: white;
+    font-size: 24px;
+  }
+
+  /* Mobile dropdown menu */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 15px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 999;
+  }
+  
+  .mobile-menu a {
+    display: block;
+    padding: 10px 20px;
     text-decoration: none;
-    transition-duration: 0.3s;
-    transition-timing-function: linear;
-    /* color: #444; */
+    color: black;
+  }
+  
+  .mobile-menu a:hover {
+    background: #ff69b4;
+    color: white;
+  }
+}
+
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none !important; /* Force hiding */
+  }
 }
 
 
-.noter {
-    font-size: 9pt;
-}
-
-.tagsep {
-    padding: 4px;
-}
-
-.tag {
-    padding-right: 2px;
-}
-
-.confshort {
-    font-weight: 300;
-}
-
-.conf {
-    display: inline-block;
-    padding-bottom: 4px;
-}
-
-.paper {
-    border-left: 1px solid #ddd;
-}
-
-.menulink:hover {
-    color: #111;
-}
-
-.profilepic {
-    width: 150px;
-    border-radius: 40%;
-    /* filter: grayscale(100%); */
-}
-
-@media (min-width: 768px) {
-    .fixed-posi {
-        /* width: 50%;
-            margin-left: 50%;
-            min-height:100%; */
-        position: fixed;
-    }
-}
-
-@media only screen and (max-width: 900px) {
-    .allstuff {
-        padding-top: 0px !important;
-    }
-
-    .allstuffp {
-        padding-top: 0px !important;
-    }
-
-    .profilepic {
-        width: 90px;
-        border-radius: 40%;
-        padding-top: 0px !important;
-        padding-bottom: 0px !important;
-        /* filter: grayscale(100%); */
-    }
-
-    .menur {
-        padding-top: 18px !important;
-    }
 
 
 
-}
 
-/* .thisauthor {
-          color: #111;
-          text-decoration: underline;
-    } */
+
+
