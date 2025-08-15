@@ -1,302 +1,190 @@
-// === Theme Settings ===
-const themes = {
-  dark: {
-    fontname: "Ubuntu",
-    fontweights: [300, 400],
-    basecolor: "#e6f1f7",
-    accentcolor: "#00d4b0",
-    highlightcolor: "#ffffff",
-    bodyfontweight: 300,
-    bodyfontsize: "12pt",
-    backgroundcolor: "#0b1a2b",
-    menucolor: "#e6f1f7",
-    menufontsize: "14pt",
-    headercolor: "#00d4b0",
-    headerfontsize: "18pt",
-    namecolor: "#ffffff",
-    namefontsize: "23pt",
-    insttitlecolor: "#ffffff",
-    insttitlesize: "12px",
-    instyearcolor: "#00d4b0",
-    instyearsize: "11px"
-  },
-  light: {
-    fontname: "Ubuntu",
-    fontweights: [300, 400],
-    basecolor: "#333",
-    accentcolor: "#a00",
-    highlightcolor: "#111",
-    bodyfontweight: 300,
-    bodyfontsize: "12pt",
-    backgroundcolor: "#ffffff",
-    menucolor: "#333",
-    menufontsize: "14pt",
-    headercolor: "#a00",
-    headerfontsize: "18pt",
-    namecolor: "#111",
-    namefontsize: "23pt",
-    insttitlecolor: "#111",
-    insttitlesize: "12px",
-    instyearcolor: "#a00",
-    instyearsize: "11px"
+// Theme Toggle
+const toggleButton = document.getElementById('themeToggle');
+
+function updateToggleIcon(theme) {
+  if (theme === 'dark') {
+    toggleButton.textContent = '☀️'; // Light mode icon
+  } else {
+    toggleButton.textContent = '🌙'; // Dark mode icon
   }
-};
+}
 
-// === Load Saved Theme or Default ===
-let currentTheme = localStorage.getItem("theme") || "dark";
-applyTheme(currentTheme);
+toggleButton.addEventListener('click', () => {
+  let currentTheme = document.documentElement.getAttribute('data-theme');
+  let targetTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', targetTheme);
+  localStorage.setItem('theme', targetTheme);
+  updateToggleIcon(targetTheme);
+});
 
-// === Apply Theme ===
-function applyTheme(themeName) {
-  const t = themes[themeName];
+// Load saved theme
+let savedTheme = localStorage.getItem('theme') || 'light';
+document.documentElement.setAttribute('data-theme', savedTheme);
+updateToggleIcon(savedTheme);
 
-  // Google Fonts
-  $("head").append(
-    `<link href='https://fonts.googleapis.com/css2?family=${t.fontname}:wght@${t.fontweights.join(
-      ";"
-    )}&display=swap' rel='stylesheet'>`
-  );
+// Trade Animation
+const canvas = document.getElementById('tradeCanvas');
+const ctx = canvas.getContext('2d');
 
-  // Base Styles
-  $("body").css({
-    "font-family": t.fontname,
-    "color": t.basecolor,
-    "font-weight": t.bodyfontweight,
-    "font-size": t.bodyfontsize,
-    "background-color": t.backgroundcolor
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = document.getElementById('trade-animation').offsetHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+const flows = Array.from({ length: 20 }, () => ({
+  x: Math.random() * canvas.width,
+  y: Math.random() * canvas.height,
+  speed: 0.5 + Math.random() * 1,
+  length: 80 + Math.random() * 120,
+  dotPos: Math.random()
+}));
+
+function drawFlows() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.lineWidth = 1.5;
+
+  flows.forEach(f => {
+    const grad = ctx.createLinearGradient(f.x, f.y, f.x + f.length, f.y);
+    grad.addColorStop(0, 'rgba(0,255,200,0.8)');
+    grad.addColorStop(1, 'rgba(0,100,255,0)');
+    ctx.strokeStyle = grad;
+    ctx.beginPath();
+    ctx.moveTo(f.x, f.y);
+    ctx.lineTo(f.x + f.length, f.y);
+    ctx.stroke();
+
+    const dotX = f.x + f.length * f.dotPos;
+    const dotY = f.y;
+    ctx.beginPath();
+    ctx.arc(dotX, dotY, 3, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+    ctx.shadowColor = 'rgba(0,255,200,0.8)';
+    ctx.shadowBlur = 8;
+    ctx.fill();
+
+    f.x += f.speed;
+    f.dotPos += 0.02;
+    if (f.dotPos > 1) f.dotPos = 0;
+    if (f.x > canvas.width) {
+      f.x = -f.length;
+      f.y = Math.random() * canvas.height;
+      f.speed = 0.5 + Math.random() * 1;
+    }
   });
 
-  $("a").css({ "color": t.accentcolor, "text-decoration": "none" });
-  $(".menulink").css({ "color": t.menucolor, "font-size": t.menufontsize });
-  $(".header").css({ "color": t.headercolor, "font-size": t.headerfontsize });
-  $(".name").css({ "color": t.namecolor, "font-size": t.namefontsize });
-  $(".papertitle").css({ "color": t.accentcolor });
-  $(".thisauthor").css({ "color": t.highlightcolor });
-  $(".institution").css({ "color": t.insttitlecolor });
-  $(".years").css({ "color": t.instyearcolor });
-
-  // Save Theme
-  localStorage.setItem("theme", themeName);
-
-  // Update Icon
-  $("#themeToggle").html(themeName === "dark" ? "🌙" : "☀️");
+  ctx.shadowBlur = 0;
+  requestAnimationFrame(drawFlows);
 }
 
-let defaultTheme = "light";
-currentTheme = localStorage.getItem("theme") || defaultTheme;
-applyTheme(currentTheme);
+drawFlows();
+window.addEventListener('load', () => {
+  document.body.classList.add('loaded');
+});
 
-// ===== Theme Toggle Script =====
-// Defaults to light theme on first visit, remembers user preference
+// Live Wallpaper Background (Particles)
+const particleCanvas = document.getElementById("particleCanvas");
+const pCtx = particleCanvas.getContext("2d");
 
-(function () {
-  // Try to load saved theme; default to light
-  const savedTheme = localStorage.getItem("theme");
-  let currentTheme = savedTheme || "light";
+function resizeParticleCanvas() {
+  particleCanvas.width = window.innerWidth;
+  particleCanvas.height = window.innerHeight;
+}
+resizeParticleCanvas();
+window.addEventListener("resize", resizeParticleCanvas);
 
-  // Apply initial theme ASAP
-  applyTheme(currentTheme);
+const particles = Array.from({ length: 40 }, () => ({
+  x: Math.random() * particleCanvas.width,
+  y: Math.random() * particleCanvas.height,
+  radius: Math.random() * 2 + 1,
+  speedX: (Math.random() - 0.5) * 0.3,
+  speedY: (Math.random() - 0.5) * 0.3
+}));
 
-  // ===== Create Toggle Button (once) =====
-  if (!$("#themeToggle").length) {
-    $("<button id='themeToggle' aria-label='Toggle theme'></button>")
-      .appendTo("body")
-      .on("click", function () {
-        currentTheme = currentTheme === "dark" ? "light" : "dark";
-        applyTheme(currentTheme);
-        localStorage.setItem("theme", currentTheme);
-        // Update icon after applying theme
-        $("#themeToggle").html(currentTheme === "dark" ? "🌙" : "☀️");
-      });
-  }
+function drawParticles() {
+  pCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
 
-  // ===== Style Toggle Button =====
-  $("<style>")
-    .prop("type", "text/css")
-    .html(`
-      #themeToggle {
-        position: fixed;
-        top: 15px;
-        right: 20px;
-        z-index: 1000;
-        width: 40px;
-        height: 40px;
-        border-radius: 100%;
-        border: none;
-        background: #123f72ff;
-        color: white;
-        font-size: 22px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 12px rgba(23, 72, 136, 0.3);
-        transition: all 0.3s ease;
-      }
-      #themeToggle:hover {
-        transform: rotate(15deg) scale(1.1);
-        box-shadow: 0 6px 18px rgba(0,0,0,0.5);
-      }
-    `)
-    .appendTo("head");
+  pCtx.fillStyle = "rgba(0, 212, 176, 0.6)"; // Teal glow
+  particles.forEach(p => {
+    pCtx.beginPath();
+    pCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+    pCtx.fill();
 
-  // ===== Set Initial Icon (light first) =====
-  $("#themeToggle").html(currentTheme === "dark" ? "🌙" : "☀️");
-})();
+    p.x += p.speedX;
+    p.y += p.speedY;
 
-// ===== Theme Application Function =====
-function applyTheme(theme) {
-  // Method 1: Using data attributes (recommended)
-  document.documentElement.setAttribute("data-theme", theme);
-  
-  // Method 2: Using body classes (alternative)
-  // document.body.className = document.body.className.replace(/theme-\w+/g, '') + ' theme-' + theme;
-  
-  // Method 3: Direct inline styles (basic implementation)
-  if (theme === "light") {
-    document.body.style.background = "#ffffff";
-    document.body.style.color = "#111111";
-  } else {
-    document.body.style.background = "#0f172a";
-    document.body.style.color = "#e2e8f0";
-  }
+    if (p.x < 0) p.x = particleCanvas.width;
+    if (p.x > particleCanvas.width) p.x = 0;
+    if (p.y < 0) p.y = particleCanvas.height;
+    if (p.y > particleCanvas.height) p.y = 0;
+  });
+
+  requestAnimationFrame(drawParticles);
 }
 
+drawParticles();
 
-// === Monetary Curve Animation ===
-document.addEventListener("DOMContentLoaded", function() {
-    const path = document.querySelector(".draw-path");
-    if (path) {
-        const length = path.getTotalLength();
-
-        // Initial state
-        path.style.strokeDasharray = length;
-        path.style.strokeDashoffset = length;
-
-        // Animate curve draw
-        path.animate(
-            [
-                { strokeDashoffset: length },
-                { strokeDashoffset: 0 }
-            ],
-            {
-                duration: 3000,
-                easing: "ease-out",
-                fill: "forwards"
-            }
-        );
-
-        // Glow effect after draw
-        setTimeout(() => {
-            path.animate(
-                [
-                    { filter: "drop-shadow(0 0 0px rgba(255,209,102,0))" },
-                    { filter: "drop-shadow(0 0 10px rgba(255,209,102,0.4))" }
-                ],
-                {
-                    duration: 1500,
-                    iterations: Infinity,
-                    direction: "alternate"
-                }
-            );
-        }, 3000);
+// Smooth Scrolling and Active Section Highlighting
+document.querySelectorAll('a[href^="#"], .nav-link').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const sectionId = this.getAttribute('href');
+    if (sectionId) {
+      const section = document.querySelector(sectionId);
+      if (section) {
+        section.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
     }
+  });
+});
+
+const sections = document.querySelectorAll('section');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop;
+    const sectionHeight = section.clientHeight;
+    if (pageYOffset >= sectionTop - sectionHeight / 3) {
+      current = section.getAttribute('id');
+    }
+  });
+
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === `#${current}`) {
+      link.classList.add('active');
+    }
+  });
 });
 
 
-// Link properties
-const acolor = accentcolor;
-const adecoration = "none";
-// const ahovercolor = accentcolor;
-// const ahoverduration = "0.3s";
-// const ahoverdecoration = "none"; //none, underline, overline, dotted, color (https://www.w3schools.com/cssref/pr_text_text-decoration.asp)
 
-// Menu properties
-const menucolor = basecolor;
-const menufontsize = "14pt";
-const menudecoration = "none";
-// const menuhover = accentcolor;
-// const menuhoverduration = "0.3s";
-// const menuhoverdecoration = "none"; //none, underline, overline, dotted, color (https://www.w3schools.com/cssref/pr_text_text-decoration.asp)
+/* Hamburger */ 
 
-// Header properties
-const headercolor = accentcolor;
-const headerfontsize = "18pt";
-const headerdecoration = "none";
-const namecolor = highlightcolor;
-const namefontsize = "23pt";
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.createElement('div');
+mobileMenu.className = 'mobile-menu';
+mobileMenu.innerHTML = `
+  <a href="#updates">Updates</a>
+  <a href="#publications">Publications</a>
+  <a href="#projects">Projects</a>
+`;
+document.body.appendChild(mobileMenu);
+
+hamburger.addEventListener('click', () => {
+  mobileMenu.style.display =
+    mobileMenu.style.display === 'block' ? 'none' : 'block';
+});
 
 
-// Publication properties
-const ptitlecolor = accentcolor;
-const ptitlefontsize = bodyfontsize;
-const ptitleweight = bodyfontweight;
-const ptitledecoration = "none";
-const ptitlestyle = "normal";
 
-const authorcolor = accentcolor;
-const authorweight = bodyfontweight;
-const authordecoration = "none";
-const authorstyle = "normal";
 
-const selfcolor = highlightcolor;
-const selfweight = bodyfontweight;
-const selfdecoration = "none";
-const selfstyle = "normal";
 
-const tagcolor = accentcolor;
-const tagweight = bodyfontweight;
-const tagdecoration = "none";
-const tagstyle = "normal";
 
-const insttitlecolor = highlightcolor;
-const insttitlesize = "12px";
-const instyearcolor = accentcolor;
-const instyearsize = "11px";
 
-//     .institution {
-//             font - size: 12px;
-//             color: #222;
-//         }
-//   .years {
-//             font - size: 11px;
-//             color: #888;
-//         }
 
-// Works for sans serif, change otherwise
-$("head").append("<link href='https://fonts.googleapis.com/css2?family=" + fontname + ":wght@" + fontweights.join(';') + "&display=swap' rel='stylesheet' type='text/css'>");
-$("body").css("font-family", fontname);
 
-$("body").css("color", basecolor);
-$("body").css("font-weight", bodyfontweight);
-$("body").css("font-size", bodyfontsize);
-$("body").css("background-color", backgroundcolor);
-
-$("a").css("color", acolor);
-$("a").css("text-decoration", adecoration);
-
-$(".menulink").css("color", menucolor);
-$(".menulink").css("font-size", menufontsize);
-$(".menulink").css("text-decoration", menudecoration);
-
-$(".header").css("color", headercolor);
-$(".header").css("font-size", headerfontsize);
-$(".header").css("text-decoration", headerdecoration);
-$(".name").css("color", namecolor);
-$(".name").css("font-size", namefontsize);
-
-$(".papertitle").css("color", ptitlecolor);
-$(".papertitle").css("font-size", ptitlefontsize);
-$(".papertitle").css("font-weight", ptitleweight);
-$(".papertitle").css("text-decoration", ptitledecoration);
-$(".papertitle").css("font-style", ptitlestyle);
-
-$(".thisauthor").css("color", selfcolor);
-$(".thisauthor").css("font-weight", selfweight);
-$(".thisauthor").css("text-decoration", selfdecoration);
-$(".thisauthor").css("font-style", selfstyle);
-
-$(".institution").css("color", insttitlecolor);
-$(".institution").css("font-size", insttitlesize);
-$(".years").css("color", instyearcolor);
-$(".years").css("font-size", instyearsize);
