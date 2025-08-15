@@ -240,19 +240,40 @@ function toggleMenu() {
 
   /* Show hamburger icon */
   #hamburger {
-    display: block;
-    position: fixed;
-    top: 12px;
-    left: 12px;
-    z-index: 1000;
-    background: linear-gradient(45deg, #2c3e50, #3498db);
-    padding: 6px 10px;
-    border-radius: 3px;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-    font-weight: bold;
-  }
+  display: block;
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 6px 10px; /* Increased for bigger touch area */
+  border-radius: 6px;
+  color: var(--hamburger-color);
+  font-size: 22px; /* Increased size */
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.12);
+  transition: all 0.25s ease;
+}
+
+#hamburger:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px) scale(1.05); /* Slightly larger hover */
+}
+
+/* Light theme */
+:root {
+  --hamburger-color: #2c3e50;
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  --hamburger-color: #f4f4f4;
+}
 
   /* Mobile dropdown menu */
   #mobileMenu {
