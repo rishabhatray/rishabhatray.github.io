@@ -163,8 +163,8 @@ body.loaded {
   border: 1px solid rgba(255, 255, 255, 0.12);
   padding: 18px 16px; /* slightly less padding to reduce bulk */
   box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-  max-width: 280px;   /* reduced width */
-  margin-left: 0px;  /* aligned a little towards left */
+  max-width: 300px;   /* reduced width */
+  margin-left: -50px;  /* aligned a little towards left */
   margin-right: auto; /* prevent centering, pushes it left */
 
   /* Fade-in animation */
