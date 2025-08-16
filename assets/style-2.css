@@ -163,9 +163,9 @@ body.loaded {
   border: 1px solid rgba(255, 255, 255, 0.12);
   padding: 18px 16px; /* slightly less padding to reduce bulk */
   box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-  max-width: 300px;   /* reduced width */
-  margin-left: -50px;  /* aligned a little towards left */
-  margin-right: auto; /* prevent centering, pushes it left */
+  max-width: 300px; /* reduced width */
+  margin-left: -50px; /* aligned a little towards left (desktop only) */
+  margin-right: auto; /* prevent centering, pushes it left (desktop only) */
 
   /* Fade-in animation */
   opacity: 0;
@@ -186,6 +186,15 @@ body.loaded {
   }
 }
 
+/* Mobile adjustments: Reset margins and center for better alignment */
+@media (max-width: 768px) { /* Adjust breakpoint if needed, e.g., 480px for smaller phones */
+  .glass-profile {
+    margin-left: 0; /* Remove negative margin to prevent overflow/misalignment */
+    margin-right: 0; /* Reset to avoid pushing */
+    margin: 0 auto; /* Center it horizontally on mobile */
+    max-width: 100%; /* Allow it to take full width if needed for stacking */
+  }
+}
 /* Sticky positioning */
 #left-fixed {
   position: fixed;
