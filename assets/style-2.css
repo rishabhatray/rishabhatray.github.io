@@ -5,22 +5,25 @@
   --link-color: #007b75; /* teal for light mode */
   --gold: #b88206;
   --gold-hover: #ffb400;
-  --line-color: #ccc; /* For soft lines, e.g., in D3.js map */
+  --line-color: #ccc; /* For soft lines */
+  --animH: 140px; /* header animation height */
+  --navH: 54px;   /* navbar height */
 }
 
 /* Dark theme */
 [data-theme="dark"] {
   --bg-color: #0b1a2b;
   --text-color: #e6f1f7;
-  --link-color: #00d4b0; /* glow color from animation lines */
-  --line-color: #eee; /* Adjusted for dark mode visibility */
+  --link-color: #00d4b0; /* glow color */
+  --line-color: #eee;
 }
 
-/* Page base */
+/* Font stack */
 body, .name, .social-icons, .about, .links, p, a, button {
   font-family: 'Ubuntu', Arial, Helvetica, sans-serif !important;
 }
 
+/* Page base */
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
@@ -29,7 +32,6 @@ body {
   opacity: 0;
   transition: opacity 0.6s ease-in-out;
 }
-
 body.loaded {
   opacity: 1;
 }
@@ -40,14 +42,11 @@ body.loaded {
   width: 100%;
   height: 140px;
   overflow: hidden;
-  
-  /* Layered gradients for a liquid feel */
   background:
     radial-gradient(circle at 20% 50%, rgba(0, 212, 176, 0.2), transparent 40%),
     radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.05), transparent 50%),
     linear-gradient(270deg, #0b1a2b, #001f3f, #0b1a2b);
   background-size: 200% 200%, 200% 200%, 600% 600%;
-
   animation: 
     bubbleMove 12s ease-in-out infinite,
     bubbleMove2 18s ease-in-out infinite,
@@ -58,12 +57,10 @@ body.loaded {
   0%, 100% { background-position: 0% 50%, 0% 50%, 0% 50%; }
   50% { background-position: 50% 60%, 0% 50%, 100% 50%; }
 }
-
 @keyframes bubbleMove2 {
   0%, 100% { background-position: 0% 50%, 50% 50%, 0% 50%; }
   50% { background-position: 60% 40%, 100% 50%, 100% 50%; }
 }
-
 @keyframes gradientShift {
   0% { background-position: 0% 50%, 0% 50%, 0% 50%; }
   50% { background-position: 50% 50%, 50% 50%, 100% 50%; }
@@ -85,12 +82,12 @@ body.loaded {
 .profilepic {
   width: 200px;
   height: 200px;
-  object-fit: contain; /* show whole picture */
+  object-fit: contain;
   border-radius: 50%;
   display: block;
   margin: 0 auto 10px;
   box-shadow: 0 0px 0px rgba(0,0,0,0.25);
-  background-color: #fff; /* optional: fills empty space */
+  background-color: #fff;
 }
 
 /* Social icons */
@@ -98,9 +95,8 @@ body.loaded {
   display: flex;
   justify-content: center;
   gap: 14px;
-  margin: 6px 0 16px; /* keep space below icons */
+  margin: 6px 0 16px;
 }
-
 .social-icons a {
   text-decoration: none;
   color: var(--gold);
@@ -113,14 +109,12 @@ body.loaded {
   border-radius: 8px;
   transition: transform .12s ease, color .12s ease;
 }
-
 .social-icons a:hover {
   color: var(--gold-hover);
   transform: translateY(-3px);
 }
-
 .social-icons .fa-file-alt {
-  font-size: 25px; /* match others */
+  font-size: 25px;
 }
 
 /* Theme toggle */
@@ -129,7 +123,7 @@ body.loaded {
   top: 15px;
   right: 20px;
   z-index: 1200;
-  width: 38px;  /* smaller */
+  width: 38px;
   height: 38px;
   border-radius: 50%;
   border: none;
@@ -143,65 +137,66 @@ body.loaded {
   cursor: pointer;
   transition: transform .15s ease, box-shadow .15s ease;
 }
-
 .theme-toggle:hover {
   transform: scale(1.08);
   box-shadow: 0 6px 16px rgba(0,0,0,0.2);
 }
-
 [data-theme="dark"] .theme-toggle {
-  background: #1e293b; /* dark grey for dark mode */
+  background: #1e293b;
   color: #f1f5f9;
+}
+#themeToggle i {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+#themeToggle:hover i {
+  transform: rotate(15deg) scale(1.1);
 }
 
 /* Glassmorphism Profile */
 .glass-profile {
-  background: rgba(255, 255, 255, 0.06); /* more transparent for soft effect */
+  background: rgba(255, 255, 255, 0.06);
   border-radius: 20px;
   backdrop-filter: blur(18px) saturate(180%);
   -webkit-backdrop-filter: blur(18px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 18px 16px; /* slightly less padding to reduce bulk */
+  padding: 18px 16px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-  max-width: 290px; /* reduced width */
-  margin-left: -50px; /* aligned a little towards left (desktop only) */
-  margin-right: auto; /* prevent centering, pushes it left (desktop only) */
+  max-width: 300px;
+  margin-left: -50px;
+  margin-right: auto;
 
-  /* Fade-in animation */
+  /* Animation */
   opacity: 0;
   transform: translateY(20px);
   animation: fadeUp 0.8s ease-out forwards;
 }
-
 [data-theme="light"] .glass-profile {
   background: rgba(255, 255, 255, 0.65);
   border: 1px solid rgba(0, 0, 0, 0.05);
   box-shadow: 0 6px 20px rgba(0,0,0,0.08);
 }
-
 @keyframes fadeUp {
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
-
 /* Mobile adjustments: Reset margins and center for better alignment */
-@media (max-width: 480px) { /* Adjust breakpoint if needed, e.g., 480px for smaller phones */
+@media (max-width: 480px) {
   .glass-profile {
-    margin-left: 0; /* Remove negative margin to prevent overflow/misalignment */
-    margin-right: 0; /* Reset to avoid pushing */
-    margin: 0 auto; /* Center it horizontally on mobile */
-    max-width: 100%; /* Allow it to take full width if needed for stacking */
+    margin-left: 0;
+    margin-right: 0;
+    margin: 0 auto;
+    max-width: 100%;
   }
 }
+
 /* Sticky positioning */
 #left-fixed {
   position: fixed;
-  top: 280px; /* aligns with right section */
+  top: 280px;
   width: 300px;
 }
-
 @media (max-width: 767px) {
   #left-fixed {
     position: static;
@@ -212,36 +207,32 @@ body.loaded {
 
 /* Glassmorphic Panel */
 .glassmorphic-panel {
-  background: rgba(255, 255, 255, 0.25); /* Semi-transparent white for light mode glass effect */
-  backdrop-filter: blur(5px); /* Soft blur */
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(5px);
   border-radius: 15px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  transition: all 0.3s ease; /* Smooth transitions for hover and theme changes */
-  color: #333; /* Dark text for light mode contrast */
-  font-weight: 400 !important; /* Lighter weight */
-  max-width: 800px; /* Optional: restrict width if needed for about section */
-  margin: 0 auto; /* Center it */
+  transition: all 0.3s ease;
+  color: #333;
+  font-weight: 400 !important;
+  max-width: 800px;
+  margin: 0 auto;
 }
-
 .glassmorphic-panel:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 0 20px rgba(255, 255, 255, 0.3);
 }
-
-/* Dark mode overrides for glassmorphic-panel */
 [data-theme="dark"] .glassmorphic-panel {
-  background: rgba(255, 255, 255, 0.05); /* Very subtle white translucency for dark glass */
-  border: 1px solid rgba(255, 255, 255, 0.1); /* Faint white border for glow */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Darker shadow for depth */
-  color: var(--text-color); /* Light text for readability */
-  backdrop-filter: blur(8px) saturate(120%); /* Slightly stronger blur and saturation for a "neon glass" feel */
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  color: var(--text-color);
+  backdrop-filter: blur(8px) saturate(120%);
 }
-
 [data-theme="dark"] .glassmorphic-panel:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 212, 176, 0.2); /* Tie in your --link-color glow for hover */
+  box-shadow: 0 8px 16px rgba(0,0,0,0.4), 0 0 20px rgba(0, 212, 176, 0.2);
 }
 
 /* Underline Animation */
@@ -250,7 +241,6 @@ a {
   color: var(--link-color);
   text-decoration: none;
 }
-
 a::after {
   content: '';
   position: absolute;
@@ -261,11 +251,9 @@ a::after {
   background: var(--link-color);
   transition: width 0.3s ease;
 }
-
 a:hover::after {
   width: 100%;
 }
-
 .links a:hover, a:hover {
   text-decoration: underline;
 }
@@ -283,24 +271,19 @@ a:hover::after {
 .updates-scroll {
   height: 250px;
   overflow-y: auto;
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: var(--link-color) transparent; /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: var(--link-color) transparent;
 }
-
-/* Chrome, Edge, Safari */
 .updates-scroll::-webkit-scrollbar {
   width: 6px;
 }
-
 .updates-scroll::-webkit-scrollbar-track {
   background: transparent;
 }
-
 .updates-scroll::-webkit-scrollbar-thumb {
   background-color: var(--link-color);
   border-radius: 3px;
 }
-
 .updates-scroll::-webkit-scrollbar-thumb:hover {
   background-color: var(--gold-hover);
 }
@@ -312,14 +295,8 @@ a:hover::after {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 0; /* keeps it behind everything */
-  pointer-events: none; /* allows clicks through it */
-}
-
-/* Fixed Navbar */
-:root {
-  --animH: 140px; /* your header animation height */
-  --navH: 54px;   /* navbar height */
+  z-index: 0;
+  pointer-events: none;
 }
 
 /* NAV BAR */
@@ -333,8 +310,7 @@ a:hover::after {
   align-items: center;
   justify-content: center;
   padding: 0 16px;
-  
-  /* Liquid glass effect */
+
   background: rgba(255,255,255,0.15);
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
@@ -342,8 +318,6 @@ a:hover::after {
   box-shadow: 
     0 4px 15px rgba(0,0,0,0.1),
     inset 0 0 0 1px rgba(255,255,255,0.2);
-  
-  /* Liquid animation */
   background-image: 
     linear-gradient(125deg, 
       rgba(255,255,255,0.3) 0%,
@@ -353,28 +327,22 @@ a:hover::after {
     );
   background-size: 200% 200%;
   animation: liquidFlow 8s ease infinite;
-  
   z-index: 100;
   transition: all 0.3s ease;
 }
-
 @keyframes liquidFlow {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
-
 .portfolio-nav a {
   font-weight: 450;
   text-decoration: none;
   color: var(--link-color);
   transition: color 0.3s ease;
 }
-
 .portfolio-nav a:hover { color: var(--gold-hover); }
-
 body.nav-pinned .portfolio-nav { top: 0; }
-
 .nav-spacer { height: var(--navH); }
 
 [data-theme="dark"] .portfolio-nav {
@@ -388,32 +356,26 @@ body.nav-pinned .portfolio-nav { top: 0; }
 
 /* Smooth anchor stops so sections aren't hidden under the bar */
 section[id] {
-  scroll-margin-top: calc(var(--navH) + 32px); /* increased padding */
+  scroll-margin-top: calc(var(--navH) + 32px);
   scroll-behavior: smooth;
-  -webkit-scroll-margin-top: calc(var(--navH) + 32px); /* for Safari */
+  -webkit-scroll-margin-top: calc(var(--navH) + 32px);
   transition: scroll-margin-top 0.3s ease;
 }
-
 html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--navH) + 32px);
 }
-
-
-
 
 /* Desktop: hamburger hidden, nav visible */
 #hamburger {
   display: none;
   cursor: pointer;
 }
-
+/* Mobile nav: hide desktop, show hamburger */
 @media (max-width: 768px) {
-  /* Mobile: hide desktop nav, show hamburger */
   .desktop-nav {
     display: none;
   }
-  
   #hamburger {
     display: block;
     position: fixed;
@@ -424,10 +386,8 @@ html {
     padding: 8px 12px;
     border-radius: 8px;
     color: white;
-    font-size: 24px;
+    font-size: 22px;
   }
-
-  /* Mobile dropdown menu */
   .mobile-menu {
     display: none;
     position: fixed;
@@ -438,30 +398,19 @@ html {
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     z-index: 999;
   }
-  
   .mobile-menu a {
     display: block;
     padding: 10px 20px;
     text-decoration: none;
     color: black;
   }
-  
   .mobile-menu a:hover {
     background: #ff69b4;
     color: white;
   }
 }
-
 @media (max-width: 768px) {
   .desktop-nav {
-    display: none !important; /* Force hiding */
+    display: none !important;
   }
 }
-
-
-
-
-
-
-
-
