@@ -178,22 +178,7 @@ window.addEventListener('scroll', () => {
 
 
 
-/* Hamburger */ 
 
-const hamburger = document.getElementById('hamburger');
-const mobileMenu = document.createElement('div');
-mobileMenu.className = 'mobile-menu';
-mobileMenu.innerHTML = `
-  <a href="#updates">Updates</a>
-  <a href="#publications">Publications</a>
-  <a href="#projects">Projects</a>
-`;
-document.body.appendChild(mobileMenu);
-
-hamburger.addEventListener('click', () => {
-  mobileMenu.style.display =
-    mobileMenu.style.display === 'block' ? 'none' : 'block';
-});
 
 
 
