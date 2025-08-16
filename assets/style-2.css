@@ -187,7 +187,7 @@ body.loaded {
 }
 
 /* Mobile adjustments: Reset margins and center for better alignment */
-@media (max-width: 768px) { /* Adjust breakpoint if needed, e.g., 480px for smaller phones */
+@media (max-width: 480px) { /* Adjust breakpoint if needed, e.g., 480px for smaller phones */
   .glass-profile {
     margin-left: 0; /* Remove negative margin to prevent overflow/misalignment */
     margin-right: 0; /* Reset to avoid pushing */
