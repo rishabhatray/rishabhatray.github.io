@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Theme Toggle Functionality
   const toggleButton = document.getElementById('themeToggle');
+
+  
   
   // Update toggle icon based on theme
   function updateToggleIcon(theme) {
@@ -26,6 +28,8 @@ document.addEventListener('DOMContentLoaded', function() {
         </svg>`;
     }
   }
+
+  
 
   // Theme toggle event listener
   if (toggleButton) {
@@ -325,3 +329,29 @@ if ('IntersectionObserver' in window) {
     observer.observe(el);
   });
 }
+
+
+
+// Publication tabs functionality
+// Publication tabs functionality
+function showPublicationTab(event, tabName) {
+  // Hide all tab contents
+  const tabContents = document.querySelectorAll('.publication-tab-content');
+  tabContents.forEach(content => content.classList.remove('active'));
+
+  // Remove active class from all tab buttons
+  const tabButtons = document.querySelectorAll('.publication-tab-button');
+  tabButtons.forEach(button => button.classList.remove('active'));
+
+  // Show selected tab content
+  document.getElementById(tabName).classList.add('active');
+
+  // Highlight clicked button
+  event.currentTarget.classList.add('active');
+}
+
+
+
+
+
+
