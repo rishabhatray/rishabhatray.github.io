@@ -6,12 +6,16 @@
 
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q759EBKEQ5"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  
+
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-Q759EBKEQ5');
   </script>
+  
   
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -23,7 +27,20 @@
   <link rel="icon" type="image/png" sizes="32x32" href="images/nicons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="images/nicons/favicon-16x16.png">
 
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Rishabh Atray",
+  "url": "https://rishabhatray.github.io",
+  "logo": "https://rishabhatray.github.io/images/nicons/favicon-32x32.png"
+}
+</script>
+
+
   <title>Rishabh Atray</title>
+
+
 
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" crossorigin="anonymous">
@@ -32,20 +49,16 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous"/>
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="assets/style-2.css">
-  <meta name="google-site-verification" content="googleec0e7dbff015c7f9"/>
+  <link rel="stylesheet" href="style-2.css">
 </head>
 <body>
 
   <canvas id="particleCanvas"></canvas>
 
+  
+
   <!-- Theme toggle -->
   <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
-
-  <!-- Trade Animation -->
-  <div id="trade-animation">
-    <canvas id="tradeCanvas"></canvas>
-  </div>
 
   <!-- Hamburger icon for mobile -->
   <div id="hamburger" onclick="toggleMenu()" aria-label="Toggle menu">☰</div>
@@ -56,7 +69,7 @@
     <a href="#experience" onclick="closeMenu()">Experience</a>
     <a href="#publication" onclick="closeMenu()">Publication</a>
     <a href="#projects" onclick="closeMenu()">Projects</a>
-    <a href="#miscellaneous" onclick="closeMenu()">Miscellaneous</a>
+    <a href="#training" onclick="closeMenu()">Training</a>
   </div>
 
   <div class="container pt-5 allstuffp">
@@ -78,29 +91,39 @@
       </div>
 
       <!-- Fixed Navigation Bar -->
-      <nav class="portfolio-nav">
-        <a class="nav-link" href="#about" onclick="scrollToSection(event, 'about')">About</a>
-        <a class="nav-link" href="#experience" onclick="scrollToSection(event, 'experience')">Experience</a>
-        <a class="nav-link" href="#publication" onclick="scrollToSection(event, 'publication')">Publication</a>
-        <a class="nav-link" href="#projects" onclick="scrollToSection(event, 'projects')">Projects</a>
-        <a class="nav-link" href="#miscellaneous" onclick="scrollToSection(event, 'miscellaneous')">Miscellaneous</a>
-      </nav>
-      <div class="nav-spacer"></div>
+<nav class="portfolio-nav flex items-center">
+  <!-- Brand -->
+  <a href="#about" class="brand flex items-center mr-6" aria-label="Rishabh Atray">
+    </a>
+
+  <!-- Nav Links -->
+  <a class="nav-link" href="#about" onclick="scrollToSection(event, 'about')">About</a>
+  <a class="nav-link" href="#experience" onclick="scrollToSection(event, 'experience')">Experience</a>
+  <a class="nav-link" href="#publication" onclick="scrollToSection(event, 'publication')">Research</a>
+  <a class="nav-link" href="#training" onclick="scrollToSection(event, 'miscellaneous')">Training</a>
+  <a class="nav-link accent-link" href="publicgoods.html">Public Goods</a>
+</nav>
+
+<div class="nav-spacer"></div>
 
       <div class="col-md-8 pt-5">
 
         <!-- About Section -->
         <section id="about">
           <div class="glassmorphic-panel">
-            <p>Hello! I am a researcher & aspiring Economist passionate about the intersection of monetary economics, international trade 
-      and financial markets.
-    </p>
+            <p>
+  Hello ! I am a researcher and my research interests lie at the intersection of 
+  <span class="research-highlight">monetary economics</span>, 
+  <span class="research-highlight">international trade</span> and 
+  <span class="research-highlight">financial markets</span>.
+</p>
+
     <p class="about-text">
       Currently, I serve as a Teaching Fellow in Economics & Public Policy 
       at the <a class="in-text" href="https://www.iimtrichy.ac.in/" target="_blank" rel="noopener">Indian Institute of Management Tiruchirappalli</a> 
       and building <span class="highlight-red">MacroT Lab</span>, 
   a global research initiative addressing policy gaps in monetary and international economics. Recently, I co-organized an outreach conference
- with <span class="forum-italic">Forum Applied Macro</span> to understand the policy instruments in fragmented world. Looking ahead, I aim to enhance forecasting models 
+ with <span class="forum-bold">Forum Applied Macro</span> to understand the policy instruments in fragmented world. Looking ahead, I aim to enhance forecasting models 
  using modern analytical tools and granular datasets to generate insights that can inform evidence-based policymaking. My long term goal is to pursue a PhD that bridges rigorous academic research with practical policy applications.
     </p>
     <p class="about-text">
@@ -202,65 +225,166 @@
         </section>
 
         <!-- Publication Section -->
-        <section id="publication">
-          <p class="header pt-5"><i class="fas fa-file-alt"></i> Publication</p>
-          <div class="glassmorphic-panel">
-            <p>Publications section content will be added here.</p>
-          </div>
-        </section>
+<section id="publication">
+  <p class="header pt-5"><i class="fas fa-file-alt"></i> Publication</p>
+  <div class="glassmorphic-panel">
+    <p class="section-subtitle">
+      Most recent publications on <a href="#" target="_blank" rel="noopener">Google Scholar</a>. * denotes equal contributions.
+    </p>
+
+    <div class="publication-tabs-container">
+      <button class="publication-tab-button active" onclick="showPublicationTab(event, 'working-papers')">WORKING PAPERS</button>
+      <button class="publication-tab-button" onclick="showPublicationTab(event, 'workinprogress')">WORK IN PROGRESS</button>
+      <button class="publication-tab-button" onclick="showPublicationTab(event, 'posters')">POSTERS/SLIDES</button>
+    </div>
+
+    <!-- Working Papers -->
+    <div id="working-papers" class="publication-tab-content active">
+      <div class="publication-content">
+        <div class="publication-item">
+          <div class="publication-title">Checkmate or Stalemate: India's Trade and Output Losses Under U.S. Reciprocal Tariffs</div>
+          <div class="publication-authors">Rishabh Atray*, Ramya KR</div>
+          <div class="publication-venue">Working Paper, 2025</div>
+          <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5155287"
+             target="_blank"
+             class="paper-tab">
+            <i class="fas fa-file-alt"></i> Paper
+          </a>
+        </div>
+
+        <div class="publication-item">
+          <div class="publication-title">Income Inequality Nexus: Sustaining Balance for a Thriving Future</div>
+          <div class="publication-authors">Rishabh Atray*, Niharika Singh</div>
+          <div class="publication-venue">Working Paper, G20 DSSSM Conference, 2024</div>
+          <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4925126"
+             target="_blank"
+             class="paper-tab">
+            <i class="fas fa-file-alt"></i> Paper
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Work in Progress -->
+    <div id="workinprogress" class="publication-tab-content">
+      <div class="publication-content">
+        <div class="publication-item"><div class="publication-title"> </div></div>
+        <div class="publication-item"><div class="publication-title"> </div></div>
+      </div>
+    </div>
+
+    <!-- Posters -->
+    <div id="posters" class="publication-tab-content">
+      <div class="publication-content">
+        <div class="publication-item">
+          <div class="publication-title">Navigating Self Reliant India in a Fragmented World (Slides)</div>
+          <div class="publication-authors">Rishabh Atray</div>
+          <div class="publication-venue">Raisina Dialogue, 2024</div>
+          <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4924158"
+             target="_blank"
+             class="paper-tab">
+            <i class="fas fa-file-alt"></i> Paper
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
         <!-- Projects Section -->
-        <section id="projects">
-          <!-- Section Header -->
-          <p class="header pt-5">
-            <i class="fas fa-rocket"></i> Projects
-          </p>
-          
-          <!-- Projects Container -->
-          <div class="projects-container">
-            <!-- Project Card 1 -->
-            <div class="project-card">
-              <div class="project-header">
-                <h4 class="project-title">
-                  <span class="project-icon">🌍</span>
-                  Global Shapers, New Delhi Hub
-                </h4>
-                <div class="project-year">2018</div>
-              </div>
-              
-              <div class="project-meta">
-                <span class="meta-tag">Community Engagement</span>
-                <span class="meta-tag meta-location">
-                  <i class="fas fa-map-marker-alt"></i> Delhi
-                </span>
-              </div>
-              
-              <p class="project-description">
-                Collaborated with the <strong>United Nations Environment Programme</strong>
-                <span class="partner-logo">
-                  <i class="fas fa-leaf"></i> UNEP
-                </span>
-                to design and implement the <em>Plastic Free Institution</em> initiative across educational campuses in India, driving awareness and sustainable practices at scale.
-              </p>
-              
-              <div class="project-highlights">
-                <span class="highlight-chip">
-                  <i class="fas fa-users"></i> Multi-campus Impact
-                </span>
-                <span class="highlight-chip">
-                  <i class="fas fa-recycle"></i> Sustainability Focus
-                </span>
-                <span class="highlight-chip">
-                  <i class="fas fa-graduation-cap"></i> Educational Outreach
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
+<section id="projects">
+  <!-- Section Header -->
+  <p class="header pt-5">
+    <i class="fas fa-rocket"></i> Projects
+  </p>
 
-        <!-- Miscellaneous Section -->
-        <section id="miscellaneous">
-          <p class="header pt-5"><i class="fas fa-puzzle-piece"></i> Miscellaneous</p>
+  <!-- Projects Container -->
+  <div class="projects-container">
+    
+    <!-- Project Card 1 -->
+    <div class="project-card">
+  <div class="project-header">
+    <h4 class="project-title">
+      <span class="project-icon"><i class="fas fa-landmark"></i></span>
+      National Housing Bank, Ministry of Finance
+    </h4>
+    <div class="project-year">Sept'23 - Apr'24</div>
+  </div>
+
+  <div class="project-meta">
+    <span class="meta-tag">Research Assistanship</span>
+    <span class="meta-tag meta-location">
+      <i class="fas fa-map-marker-alt"></i> IIM Tiruchirappalli
+    </span>
+  </div>
+
+  <p class="project-description">
+    Worked under a grant of <strong>National Housing Bank (MoF)</strong>
+    Implemented Cost, Affordability, and Financing Strategies for Green Residential Buildings in India.
+    Conducted an in-depth analysis of over 40 banks through community surveys & engaged more than 10,000
+    citizens across rural and urban areas in 15 states to assess awareness and adoption of green building practices.
+  </p>
+
+  <div class="project-highlights">
+    
+    <span class="highlight-chip">
+      <i class="fas fa-recycle"></i> Green Financing
+    </span>
+    <!-- New Paper Tab -->
+    <a href="https://www.nhb.org.in/wp-content/uploads/2024/04/Green-residential-building-in-India-Cost-affordability-and-financing-strategies.pdf?prophazecheck=1" 
+       target="_blank" 
+       class="highlight-chip paper-chip">
+      <i class="fas fa-file-pdf"></i> Paper
+    </a>
+  </div>
+</div>
+
+    <!-- End Project Card 1 -->
+
+    <!-- Project Card 2 -->
+    <div class="project-card">
+      <div class="project-header">
+        <h4 class="project-title">
+          <span class="project-icon">🌍</span>
+          Global Shapers, New Delhi Hub
+        </h4>
+        <div class="project-year">June 2018</div>
+      </div>
+
+      <div class="project-meta">
+        <span class="meta-tag">Community Engagement</span>
+        <span class="meta-tag meta-location">
+          <i class="fas fa-map-marker-alt"></i> Delhi
+        </span>
+      </div>
+
+      <p class="project-description">
+        Collaborated with the <strong>United Nations Environment Programme</strong>
+        <span class="partner-logo">
+          <i class="fas fa-leaf"></i> UNEP
+        </span>
+        to design and implement the <em>Plastic Free Institution</em> initiative across educational campuses in India,
+        driving awareness and sustainable practices at scale.
+      </p>
+
+      <div class="project-highlights">
+        <span class="highlight-chip">
+          <i class="fas fa-users"></i> Multi-campus Impact Media Coverage
+        </span>
+                
+      </div>
+    </div>
+    <!-- End Project Card 2 -->
+
+  </div>
+</section>
+
+
+        <!-- Training Section -->
+        <section id="training">
+          <p class="header pt-5"><i class="fas fa-chalkboard-teacher"></i> Training</p>
+
           
           <!-- Summer School Block -->
           <div class="glassmorphic-panel">
@@ -311,7 +435,7 @@
                 </div>
                 <div class="summer-desc">
                   <h4>
-                    Remote Post-Keynesian Economics Summer School
+                    Post-Keynesian Economics Summer School (PKES)
                     <span class="date-span">May'21 - Aug'21</span>
                   </h4>
                   <p>
@@ -322,36 +446,7 @@
             </div>
           </div>
 
-          <!-- Awards Block -->
-          <div class="glassmorphic-panel">
-            <div class="misc-block">
-              <h3 class="subheading"><i class="fas fa-award"></i> Awards</h3>
-              
-              <div class="award-card">
-                <span class="icon">🏆</span>
-                <div class="award-text">
-                  <strong>Winner, World Bank Case Challenge 2021</strong>  
-                  <p>Proposed innovative solutions for <em>Resilient Recovery for People & Planet</em>, chosen among global teams.</p>
-                </div>
-              </div>
-
-              <div class="award-card">
-                <span class="icon">🥇</span>
-                <div class="award-text">
-                  <strong>Best Research Contribution Award</strong>  
-                  <p>Honored by <em>Duayen Foundation</em> for impactful contributions to societal research.</p>
-                </div>
-              </div>
-
-              <div class="award-card">
-                <span class="icon">🎓</span>
-                <div class="award-text">
-                  <strong>CBSE National Merit Scholar</strong>  
-                  <p>Recognized nationwide for outstanding academic excellence in Class X.</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          
 
           <!-- Technical Skills Block -->
           <div class="glassmorphic-panel">
@@ -382,24 +477,91 @@
             </section>
           </div>
         </section>
+        <!-- Awards Block -->
+          <div class="glassmorphic-panel">
+            <div class="misc-block">
+              <h3 class="subheading"><i class="fas fa-award"></i> Awards</h3>
+              
+              <div class="award-card">
+                <span class="icon">🏆</span>
+                <div class="award-text">
+                  <strong>Winner, World Bank Case Challenge 2021</strong>  
+                  <p>Proposed innovative solutions for <em>Resilient Recovery for People & Planet</em>, chosen among global teams.</p>
+                </div>
+              </div>
+
+              <div class="award-card">
+                <span class="icon">🥇</span>
+                <div class="award-text">
+                  <strong>Best Research Contribution Award</strong>  
+                  <p>Honored by <em>Duayen Foundation</em> for impactful contributions to societal research.</p>
+                </div>
+              </div>
+
+              <div class="award-card">
+                <span class="icon">🎓</span>
+                <div class="award-text">
+                  <strong>CBSE National Merit Scholar</strong>  
+                  <p>Recognized nationwide for outstanding academic excellence in Class X.</p>
+                </div>
+              </div>
+            </div>
+          </div>
 
       </div>
     </div>
   </div>
 
-  <footer>
-    <div class="text-center medium mt-2">
-      <a href="https://github.com/SebastinSanty/minimal-research-theme">Website template</a> | 
-      <a href="https://github.com/SebastinSanty/Just-Another-Research-CV">CV template</a>
-    </div>
-    <br>
-  </footer>
+  
+
+  <footer class="site-footer">
+  <div class="footer-links">
+    <a href="https://github.com/SebastinSanty/minimal-research-theme">Website template</a> | 
+    <a href="https://github.com/SebastinSanty/Just-Another-Research-CV">CV template</a>
+  </div>
+  <p>&copy; 2025 All Rights Reserved</p>
+</footer>
+
+
+
+<style>
+.site-footer {
+  text-align: center;
+  padding: 15px;
+  font-size: 14px;
+  border-top: 1px solid var(--line-color);
+  background: var(--bg-color);
+  color: var(--text-color);
+}
+
+.site-footer a {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.site-footer a:hover {
+  color: var(--gold-hover);
+}
+</style>
+
+
+
+
 
   <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
-  <script src="assets/style-2.js"></script>
+  <script src="style-2.js"></script>
+
+
+
+  
+
+  
+
+ 
+
 
 </body>
 </html>
