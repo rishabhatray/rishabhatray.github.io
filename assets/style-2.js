@@ -353,5 +353,62 @@ function showPublicationTab(event, tabName) {
 
 
 
+// Scroll Progress Indicator
+function updateScrollProgress() {
+  const scrollProgress = document.getElementById('scrollProgress');
+  const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const currentScroll = window.scrollY;
+  
+  // Calculate scroll percentage
+  const scrollPercentage = (currentScroll / totalHeight) * 100;
+  
+  // Update the width of the red progress bar
+  scrollProgress.style.width = Math.min(scrollPercentage, 100) + '%';
+}
+
+// Listen for scroll events
+window.addEventListener('scroll', updateScrollProgress);
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', updateScrollProgress);
+
+
+
+//Mobile Pull-up Button
+// Scroll to top function
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+// Show/hide button based on scroll position
+window.addEventListener('scroll', function() {
+    const pullupBtn = document.querySelector('.mobile-pullup-btn');
+    if (window.scrollY > 300) {
+        pullupBtn.classList.add('visible');
+    } else {
+        pullupBtn.classList.remove('visible');
+    }
+});
+
+// Initialize button on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const pullupBtn = document.querySelector('.mobile-pullup-btn');
+    if (pullupBtn) {
+        // Button starts hidden
+        pullupBtn.classList.remove('visible');
+    }
+});
+
+
+
+
+
+
+
+
+
 
 
