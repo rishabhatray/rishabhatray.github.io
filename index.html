@@ -7,19 +7,16 @@
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q759EBKEQ5"></script>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+  
   
 
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-Q759EBKEQ5');
-  </script>
+
   
   
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Pre-Doctoral Researcher, Google Research India">
+  <meta name="description" content="Research, IIM Trichy">
   <meta name="author" content="Rishabh Atray">
   <meta name="theme-color" content="#222222">
 
@@ -53,7 +50,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous"/>
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="assets/style-2.css">
+  <link rel="stylesheet" href="style-2.css">
 </head>
 <body>
 
@@ -67,14 +64,7 @@
   <!-- Hamburger icon for mobile -->
   <div id="hamburger" onclick="toggleMenu()" aria-label="Toggle menu">☰</div>
 
-  <!-- Mobile Menu -->
-  <div id="mobileMenu">
-    <a href="#about" onclick="closeMenu()">About</a>
-    <a href="#experience" onclick="closeMenu()">Experience</a>
-    <a href="#publication" onclick="closeMenu()">Publication</a>
-    <a href="#projects" onclick="closeMenu()">Projects</a>
-    <a href="#training" onclick="closeMenu()">Training</a>
-  </div>
+  
 
   <div class="container pt-5 allstuffp">
     <div class="row pt-5 allstuff">
@@ -94,21 +84,74 @@
         </div>
       </div>
 
-      <!-- Fixed Navigation Bar -->
+      <!-- Mobile Menu -->
+<div id="mobileMenu">
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#experience" onclick="closeMenu()">Experience</a>
+
+  <!-- Dropdown in mobile -->
+  <div class="mobile-dropdown">
+    <button onclick="toggleSubMenu(this)">Research</button>
+    <div class="submenu">
+      <a href="#publication" onclick="closeMenu()">Publications</a>
+      <a href="#projects" onclick="closeMenu()">Projects</a>
+      <a href="#conferences" onclick="closeMenu()">Conferences</a>
+    </div>
+  </div>
+
+  <div class="mobile-dropdown">
+    <button onclick="toggleSubMenu(this)">Training</button>
+    <div class="submenu">
+      <a href="#summer-school" onclick="closeMenu()">Summer School</a>
+      <a href="#technical-skills" onclick="closeMenu()">Technical Skills</a>
+    </div>
+  </div>
+</div>
+
+<!-- Fixed Navigation Bar -->
 <nav class="portfolio-nav flex items-center">
+  <!-- Scroll Progress Indicator -->
+  <div class="scroll-progress-container">
+    <div class="scroll-progress-bar" id="scrollProgress"></div>
+  </div>
+
   <!-- Brand -->
-  <a href="#about" class="brand flex items-center mr-6" aria-label="Rishabh Atray">
-    </a>
+  <a href="#about" class="brand flex items-center mr-6" aria-label="Rishabh Atray"></a>
 
   <!-- Nav Links -->
   <a class="nav-link" href="#about" onclick="scrollToSection(event, 'about')">About</a>
   <a class="nav-link" href="#experience" onclick="scrollToSection(event, 'experience')">Experience</a>
-  <a class="nav-link" href="#publication" onclick="scrollToSection(event, 'publication')">Research</a>
-  <a class="nav-link" href="#training" onclick="scrollToSection(event, 'miscellaneous')">Training</a>
+
+  
+
+  <!-- Desktop Dropdown -->
+  <div class="dropdown">
+    <a class="nav-link" href="#research">Research ▾</a>
+    <div class="dropdown-content">
+      <a href="#publication">Publications</a>
+      <a href="#projects">Projects</a>
+      <a href="#conferences">Conferences</a>
+    </div>
+  </div>
+
+  <div class="dropdown">
+    <a class="nav-link" href="#training">Training ▾</a>
+    <div class="dropdown-content">
+      <a href="#summer-school">Summer School</a>
+      <a href="#technical-skills">Technical Skills</a>
+    </div>
+  </div>
+
   <a class="nav-link accent-link" href="publicgoods.html">Public Goods</a>
 </nav>
+<script>
+function toggleSubMenu(button) {
+  const submenu = button.nextElementSibling;
+  submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+}
+</script>
 
-<div class="nav-spacer"></div>
+
 
       <div class="col-md-8 pt-5">
 
@@ -117,7 +160,7 @@
           <div class="glassmorphic-panel">
             <p>
   Hello ! I am a researcher and my research interests lie at the intersection of 
-  <span class="research-highlight">monetary economics</span>, 
+  <span class="research-highlight">monetary- economics</span>, 
   <span class="research-highlight">international trade</span> and 
   <span class="research-highlight">financial markets</span>.
 </p>
@@ -127,7 +170,7 @@
       at the <a class="in-text" href="https://www.iimtrichy.ac.in/" target="_blank" rel="noopener">Indian Institute of Management Tiruchirappalli</a> 
       and building <span class="highlight-red">MacroT Lab</span>, 
   a global research initiative addressing policy gaps in monetary and international economics. Recently, I co-organized an outreach conference
- with <span class="forum-bold">Forum Applied Macro</span> to understand the policy instruments in fragmented world. Looking ahead, I aim to enhance forecasting models 
+ with Forum Applied Macro to understand the policy instruments in fragmented world. Looking ahead, I aim to enhance forecasting models 
  using modern analytical tools and granular datasets to generate insights that can inform evidence-based policymaking. My long term goal is to pursue a PhD that bridges rigorous academic research with practical policy applications.
     </p>
     <p class="about-text">
@@ -151,6 +194,16 @@
                     <td><span class="date-pill">Nov 2025</span></td>
                     <td>Presenting Paper at 10th IIM Ranchi Pan India World Management Conference (upcoming)!</td>
                   </tr>
+                  <tr>
+                    <tr>
+                    <td><span class="date-pill">Sep 2025</span></td>
+                    <td>
+                    Attended 'Dynamic local projections with Stata' seminar through VIMM! 
+                    (<a href="https://www.vimacro.org/jamel-saadaoui-dynamic-local-projections-stata" target="_blank">Materials</a>)
+                    </td>
+                    </tr>
+
+
                   
                   <tr>
                     <td><span class="date-pill">Aug 2024</span></td>
@@ -245,35 +298,52 @@
     <!-- Working Papers -->
     <div id="working-papers" class="publication-tab-content active">
       <div class="publication-content">
+        
+        <!-- First Publication Item -->
         <div class="publication-item">
-          <div class="publication-title">Checkmate or Stalemate: India's Trade and Output Losses Under U.S. Reciprocal Tariffs</div>
-          <div class="publication-authors">Rishabh Atray*, Ramya KR</div>
-          <div class="publication-venue">Working Paper, 2025</div>
-          <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5155287"
-             target="_blank"
-             class="paper-tab">
-            <i class="fas fa-file-alt"></i> Paper
-          </a>
+          <div class="publication-images">
+            <img src="images/publication1.png" alt="Checkmate or Stalemate: India's Trade and Output Losses Under U.S. Reciprocal Tariffs">
+          </div>
+          <div class="publication-details">
+            <div class="publication-title">Checkmate or Stalemate: India's Trade and Output Losses Under U.S. Reciprocal Tariffs</div>
+            <div class="publication-authors">Rishabh Atray*, Ramya KR</div>
+            <div class="publication-venue">Working Paper, 2025</div>
+            <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5155287"
+               target="_blank"
+               class="paper-tab">
+              <i class="fas fa-file-alt"></i> Paper
+            </a>
+          </div>
         </div>
 
+        <!-- Second Publication Item -->
         <div class="publication-item">
-          <div class="publication-title">Income Inequality Nexus: Sustaining Balance for a Thriving Future</div>
-          <div class="publication-authors">Rishabh Atray*, Niharika Singh</div>
-          <div class="publication-venue">Working Paper, G20 DSSSM Conference, 2024</div>
-          <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4925126"
-             target="_blank"
-             class="paper-tab">
-            <i class="fas fa-file-alt"></i> Paper
-          </a>
+          <div class="publication-images">
+            <img src="images/publication2.png" alt="Income Inequality Nexus: Sustaining Balance for a Thriving Future">
+          </div>
+          <div class="publication-details">
+            <div class="publication-title">Income Inequality Nexus: Sustaining Balance for a Thriving Future</div>
+            <div class="publication-authors">Rishabh Atray*, Niharika Singh</div>
+            <div class="publication-venue">Working Paper, G20 DSSSM Conference, 2024</div>
+            <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4925126"
+               target="_blank"
+               class="paper-tab">
+              <i class="fas fa-file-alt"></i> Paper
+            </a>
+          </div>
         </div>
+
       </div>
     </div>
 
     <!-- Work in Progress -->
     <div id="workinprogress" class="publication-tab-content">
       <div class="publication-content">
-        <div class="publication-item"><div class="publication-title"> </div></div>
-        <div class="publication-item"><div class="publication-title"> </div></div>
+        <div class="publication-item">
+          <div class="publication-details">
+            <div class="publication-title">Coming Soon...</div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -281,17 +351,20 @@
     <div id="posters" class="publication-tab-content">
       <div class="publication-content">
         <div class="publication-item">
-          <div class="publication-title">Navigating Self Reliant India in a Fragmented World (Slides)</div>
-          <div class="publication-authors">Rishabh Atray</div>
-          <div class="publication-venue">Raisina Dialogue, 2024</div>
-          <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4924158"
-             target="_blank"
-             class="paper-tab">
-            <i class="fas fa-file-alt"></i> Paper
-          </a>
+          <div class="publication-details">
+            <div class="publication-title">Navigating Self Reliant India in a Fragmented World (Slides)</div>
+            <div class="publication-authors">Rishabh Atray</div>
+            <div class="publication-venue">Raisina Dialogue, 2024</div>
+            <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4924158"
+               target="_blank"
+               class="paper-tab">
+              <i class="fas fa-file-alt"></i> Paper
+            </a>
+          </div>
         </div>
       </div>
     </div>
+
   </div>
 </section>
 
@@ -308,6 +381,7 @@
     
     <!-- Project Card 1 -->
     <div class="project-card">
+      
   <div class="project-header">
     <h4 class="project-title">
       <span class="project-icon"><i class="fas fa-landmark"></i></span>
@@ -351,7 +425,7 @@
       <div class="project-header">
         <h4 class="project-title">
           <span class="project-icon">🌍</span>
-          Global Shapers, New Delhi Hub
+          Global Shapers, World Economic Forum
         </h4>
         <div class="project-year">June 2018</div>
       </div>
@@ -391,14 +465,30 @@
 
           
           <!-- Summer School Block -->
+          <section id="summer-school"></section>
           <div class="glassmorphic-panel">
             <div class="misc-block">
               <h3 class="subheading"><i class="fas fa-university"></i> Summer School</h3>
+
+              <!-- Summer School 0 -->
+              <div class="summer-school">
+                <div class="summer-images">
+                  <img src="images/summer15.jpg" alt="Summer School and Conference on Machine Learning for Economics and Finance">
+                </div>
+                <div class="summer-desc">
+                  <h4>
+                    Machine Learning for Economics and Finance for DSM 2025
+                    <span class="date-span">Aug'25</span>
+                  </h4>
+                  <p>
+                    Undertook 5 day summer school on Deep Learning for Dynamic Stochastic Models. Attended intensive lectures & coding sessions. Participated in panel discussions highlighting the latest innovations in dynamic stochastic modeling and deep learning. (Virtual)</p>
+                </div>
+              </div>
               
               <!-- Summer School 1 -->
               <div class="summer-school">
                 <div class="summer-images">
-                  <img src="images/summer1.jpg" alt="Climate Change AI Summer School">
+                  <img src="images/summer1.png" alt="Climate Change AI Summer School">
                 </div>
                 <div class="summer-desc">
                   <h4>
@@ -454,30 +544,32 @@
 
           <!-- Technical Skills Block -->
           <div class="glassmorphic-panel">
-            <section class="skills-section">
-              <h3 class="subheading"><i class="fas fa-laptop-code"></i> Technical Skills</h3>
-              <table class="skills-table">
-                <thead>
-                  <tr>
-                    <th>Category</th>
-                    <th>Skills</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Programming</td>
-                    <td>STATA, Julia, Python, EViews, LaTeX, Web Design (HTML/CSS, ReactJS)</td>
-                  </tr>
-                  <tr>
-                    <td>Packages</td>
-                    <td>Matplotlib, MacroModelling.jl, Kezdi.jl</td>
-                  </tr>
-                  <tr>
-                    <td>Databases</td>
-                    <td>CMIE, NHPD, FRED</td>
-                  </tr>
-                </tbody>
-              </table>
+            <section id="technical-skills">
+              <section class="skills-section">
+                <h3 class="subheading"><i class="fas fa-laptop-code"></i> Technical Skills</h3>
+                <table class="skills-table">
+                  <thead>
+                    <tr>
+                      <th>Category</th>
+                      <th>Skills</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Programming</td>
+                      <td>STATA, Julia, Python, EViews, LaTeX, Web Design (HTML/CSS, ReactJS)</td>
+                    </tr>
+                    <tr>
+                      <td>Packages</td>
+                      <td>Matplotlib, MacroModelling.jl, Kezdi.jl</td>
+                    </tr>
+                    <tr>
+                      <td>Databases</td>
+                      <td>CMIE, NHPD, FRED</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
             </section>
           </div>
         </section>
@@ -518,54 +610,24 @@
 
   
 
-  <footer class="site-footer">
-  <div class="footer-links">
-    <a href="https://github.com/SebastinSanty/minimal-research-theme">Website template</a> | 
-    <a href="https://github.com/SebastinSanty/Just-Another-Research-CV">CV template</a>
-  </div>
-  <p>&copy; 2025 All Rights Reserved</p>
+  
+
+<footer class="site-footer">
+  <p>Website is based on <a href="https://github.com/SebastinSanty/minimal-research-theme">minimal</a> © Rishabh Atray 2025</p>
 </footer>
-
-
-
-<style>
-.site-footer {
-  text-align: center;
-  padding: 15px;
-  font-size: 14px;
-  border-top: 1px solid var(--line-color);
-  background: var(--bg-color);
-  color: var(--text-color);
-}
-
-.site-footer a {
-  color: var(--link-color);
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-.site-footer a:hover {
-  color: var(--gold-hover);
-}
-</style>
-
-
-
 
 
   <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
-  <script src="assets/style-2.js"></script>
+  <script src="style-2.js"></script>
 
 
-
-  
-
-  
-
- 
-
+  <!-- Mobile Pull-up Button -->
+<button class="mobile-pullup-btn" onclick="scrollToTop()" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+</button>
 
 </body>
 </html>
