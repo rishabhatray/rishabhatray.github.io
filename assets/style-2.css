@@ -108,14 +108,15 @@ body.loaded {
 
 /* Profile picture */
 .profilepic {
-  width: 200px;
-  height: 200px;
-  object-fit: contain;
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
   border-radius: 50%;
   display: block;
   margin: 0 auto 10px;
   box-shadow: 0 0px 0px rgba(0,0,0,0.25);
   background-color: #fff;
+  object-position: cover;
 }
 
 /* Social icons */
