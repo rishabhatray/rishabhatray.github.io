@@ -50,7 +50,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous"/>
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="assets/style-2.css">
+  <link rel="stylesheet" href="style-2.css">
 </head>
 <body>
 
@@ -126,9 +126,9 @@
 
   <!-- Desktop Dropdown -->
   <div class="dropdown">
-    <a class="nav-link" href="#research">Research ▾</a>
+    <a class="nav-link" href="#research">Research▾</a>
     <div class="dropdown-content">
-      <a href="#publication">Publications</a>
+      <a href="#Research">Publication</a>
       <a href="#projects">Projects</a>
       <a href="#conferences">Conferences</a>
     </div>
@@ -192,7 +192,9 @@ function toggleSubMenu(button) {
                 <tbody>
                   <tr>
                     <td><span class="date-pill">Nov 2025</span></td>
-                    <td>Presenting Paper at 10th IIM Ranchi Pan India World Management Conference (upcoming)!</td>
+                    <td>Presented Poster at 10th IIM Ranchi Pan India World Management Conference!
+                    (<a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5987354" target="_blank">Poster</a>)
+                    </td>
                   </tr>
                   <tr>
                     <tr>
@@ -281,22 +283,54 @@ function toggleSubMenu(button) {
           </div>
         </section>
 
-        <!-- Publication Section -->
-<section id="publication">
-  <p class="header pt-5"><i class="fas fa-file-alt"></i> Publication</p>
+        <!-- Research Section -->
+<section id="Research">
+  <p class="header pt-5"><i class="fas fa-file-alt"></i> Research</p>
   <div class="glassmorphic-panel">
     <p class="section-subtitle">
       Most recent publications on <a href="#" target="_blank" rel="noopener">Google Scholar</a>. * denotes equal contributions.
     </p>
 
     <div class="publication-tabs-container">
-      <button class="publication-tab-button active" onclick="showPublicationTab(event, 'working-papers')">WORKING PAPERS</button>
+      <button class="publication-tab-button active" onclick="showPublicationTab(event, 'publications')">PUBLICATIONS</button>
+      <button class="publication-tab-button" onclick="showPublicationTab(event, 'working-papers')">WORKING PAPERS</button>
       <button class="publication-tab-button" onclick="showPublicationTab(event, 'workinprogress')">WORK IN PROGRESS</button>
       <button class="publication-tab-button" onclick="showPublicationTab(event, 'posters')">POSTERS/SLIDES</button>
     </div>
+    <!-- Publications -->
+<div id="publications" class="publication-tab-content active">
+  <div class="publication-content">
+
+    <div class="publication-item">
+      <div class="publication-images">
+        <img src="images/publication_journal1.png" alt="Do Macroeconomic Fundamentals Explain Stock Market Returns in India? Evidence from Robust Annual Estimates">
+      </div>
+      <div class="publication-details">
+        <div class="publication-title">
+          Do Macroeconomic Fundamentals Explain Stock Market Returns in India? Evidence from Robust Annual Estimates
+        </div>
+        <div class="publication-authors">
+          Rishabh Atray*, Ramya KR
+        </div>
+      <div class="publication-venue">
+  <span class="pub-status">Under Review</span>,
+  <span class="pub-journal">International Journal of Economics and Finance Studies</span>,
+  2025
+</div>
+
+<a href="#" target="_blank" class="paper-tab">
+  <i class="fas fa-file-alt"></i> Paper
+</a>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
 
     <!-- Working Papers -->
-    <div id="working-papers" class="publication-tab-content active">
+    <div id="working-papers" class="publication-tab-content">
       <div class="publication-content">
         
         <!-- First Publication Item -->
@@ -352,24 +386,35 @@ function toggleSubMenu(button) {
       <div class="publication-content">
         <div class="publication-item">
           <div class="publication-details">
-            <div class="publication-title">Navigating Self Reliant India in a Fragmented World (Slides)</div>
+            <div class="publication-title">
+              Navigating Self Reliant India in a Fragmented World (Slides)
+            </div>
             <div class="publication-authors">Rishabh Atray</div>
             <div class="publication-venue">Raisina Dialogue, 2024</div>
             <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4924158"
                target="_blank"
                class="paper-tab">
-              <i class="fas fa-file-alt"></i> Paper
+              <i class="fas fa-file-alt"></i> Slides
+            </a>
+          </div>
+        </div>
+        <div class="publication-item">
+          <div class="publication-details">
+            <div class="publication-title">
+              Bridging the Gap: Gender Pay, Financial Security and Literacy in India (Poster)
+            </div>
+            <div class="publication-authors">Swati Raja, Ramya KR, Rishabh Atray*</div>
+            <div class="publication-venue">PAN India World Management Conference, IIM Ranchi (2025)</div>
+            <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5987354"
+               target="_blank"
+               class="paper-tab">
+              <i class="fas fa-file-alt"></i> Poster
             </a>
           </div>
         </div>
       </div>
     </div>
-
-  </div>
-</section>
-
-
-        <!-- Projects Section -->
+    </section>
 <section id="projects">
   <!-- Section Header -->
   <p class="header pt-5">
@@ -621,7 +666,7 @@ function toggleSubMenu(button) {
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
-  <script src="assets/style-2.js"></script>
+  <script src="style-2.js"></script>
 
 
   <!-- Mobile Pull-up Button -->
