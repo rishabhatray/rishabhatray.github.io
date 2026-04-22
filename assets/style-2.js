@@ -2,6 +2,36 @@
 document.addEventListener('DOMContentLoaded', function() {
   const desktopScrollMedia = window.matchMedia('(min-width: 769px)');
   const rightColumn = document.querySelector('.right-column');
+  const VALID_THEMES = new Set(['light', 'dark']);
+
+  function normalizeTheme(theme) {
+    return VALID_THEMES.has(theme) ? theme : 'light';
+  }
+
+  function safeGetThemePreference() {
+    try {
+      return normalizeTheme(localStorage.getItem('theme') || 'light');
+    } catch (error) {
+      return 'light';
+    }
+  }
+
+  function safeSetThemePreference(theme) {
+    try {
+      localStorage.setItem('theme', normalizeTheme(theme));
+    } catch (error) {
+      // Ignore storage failures in private browsing or restricted environments.
+    }
+  }
+
+  function hardenExternalLinks() {
+    document.querySelectorAll('a[target="_blank"]').forEach(link => {
+      const relValues = new Set((link.getAttribute('rel') || '').split(/\s+/).filter(Boolean));
+      relValues.add('noopener');
+      relValues.add('noreferrer');
+      link.setAttribute('rel', Array.from(relValues).join(' '));
+    });
+  }
 
   function usesSplitScrollLayout() {
     return desktopScrollMedia.matches && !!rightColumn;
@@ -126,17 +156,19 @@ document.addEventListener('DOMContentLoaded', function() {
   if (toggleButton) {
     toggleButton.addEventListener('click', () => {
       let currentTheme = document.documentElement.getAttribute('data-theme');
-      let targetTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+      let targetTheme = normalizeTheme(currentTheme) === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', targetTheme);
-      localStorage.setItem('theme', targetTheme);
+      safeSetThemePreference(targetTheme);
       updateToggleIcon(targetTheme);
     });
 
     // Load saved theme
-    let savedTheme = localStorage.getItem('theme') || 'light';
+    let savedTheme = safeGetThemePreference();
     document.documentElement.setAttribute('data-theme', savedTheme);
     updateToggleIcon(savedTheme);
   }
+
+  hardenExternalLinks();
 
   // Mobile Menu Toggle
   window.toggleMenu = function() {
@@ -275,7 +307,14 @@ document.addEventListener('DOMContentLoaded', function() {
   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
   mediaQuery.addEventListener('change', (e) => {
     // Only auto-switch if user hasn't manually set a preference
-    if (!localStorage.getItem('theme')) {
+    let hasStoredTheme = false;
+    try {
+      hasStoredTheme = !!localStorage.getItem('theme');
+    } catch (error) {
+      hasStoredTheme = false;
+    }
+
+    if (!hasStoredTheme) {
       const newTheme = e.matches ? 'dark' : 'light';
       document.documentElement.setAttribute('data-theme', newTheme);
       updateToggleIcon(newTheme);
@@ -283,7 +322,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Initialize theme on load
-  const currentTheme = localStorage.getItem('theme') || 
+  const currentTheme = normalizeTheme(safeGetThemePreference()) ||
     (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
   document.documentElement.setAttribute('data-theme', currentTheme);
   if (toggleButton) {
@@ -406,4 +445,3 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('resize', updatePullupVisibility);
     updatePullupVisibility();
 });
-
