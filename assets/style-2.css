@@ -229,7 +229,7 @@ p + p,
   font-weight: 600;
   letter-spacing: 0.01em;
   color: var(--gold);
-  text-align: left;
+  text-align: center;
   margin-bottom: 14px;
   line-height: 1.15;
 }
